@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>휴가 신청 관리 | LeaveERP</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.16.0/styles/overlayscrollbars.min.css">
+  <link rel="stylesheet" href="styles/common.css">
+</head>
+<body>
+<aside class="sidebar" id="sidebar"></aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-title">휴가 신청 관리</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" title="내보내기" aria-label="내보내기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">휴가 신청 관리</h1>
+        <p class="page-subtitle">전체 휴가 신청 내역을 확인하고 승인·반려를 처리하세요</p>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-filter="all" role="tab">전체 <span class="tab-count">10</span></button>
+      <button class="tab-btn" data-filter="pending" role="tab">승인 대기 <span class="tab-count" id="pendingCount">4</span></button>
+      <button class="tab-btn" data-filter="approved" role="tab">승인 <span class="tab-count">4</span></button>
+      <button class="tab-btn" data-filter="rejected" role="tab">반려 <span class="tab-count">2</span></button>
+    </div>
+
+    <div class="filter-bar">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="이름 또는 부서 검색..." aria-label="신청 검색">
+      </div>
+      <select class="filter-select" id="deptFilter" aria-label="부서 필터">
+        <option value="">전체 부서</option>
+        <option value="개발팀">개발팀</option>
+        <option value="마케팅팀">마케팅팀</option>
+        <option value="영업팀">영업팀</option>
+        <option value="인사팀">인사팀</option>
+        <option value="기획팀">기획팀</option>
+      </select>
+      <select class="filter-select" id="typeFilter" aria-label="유형 필터">
+        <option value="">전체 유형</option>
+        <option value="연차">연차</option>
+        <option value="반차">반차</option>
+        <option value="병가">병가</option>
+        <option value="경조사">경조사</option>
+      </select>
+    </div>
+
+    <div class="card section">
+      <div class="card-body">
+        <div class="table-wrapper">
+          <table>
+            <thead style="border-top: var(--border-default);">
+              <tr>
+                <th>신청자</th>
+                <th>부서</th>
+                <th>유형</th>
+                <th>신청 기간</th>
+                <th>일수</th>
+                <th>신청일</th>
+                <th>상태</th>
+                <th>처리</th>
+              </tr>
+            </thead>
+            <tbody id="requestBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 상세/승인 모달 -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">신청 상세</span>
+      <button class="modal-close" onclick="closeModal('detailModal')" aria-label="닫기">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="stat-row"><span class="stat-row-label">신청자</span><span class="stat-row-value" id="mName">—</span></div>
+      <div class="stat-row"><span class="stat-row-label">부서</span><span class="stat-row-value" id="mDept">—</span></div>
+      <div class="stat-row"><span class="stat-row-label">유형</span><span class="stat-row-value" id="mType">—</span></div>
+      <div class="stat-row"><span class="stat-row-label">신청 기간</span><span class="stat-row-value" id="mPeriod">—</span></div>
+      <div class="stat-row"><span class="stat-row-label">일수</span><span class="stat-row-value" id="mDays">—</span></div>
+      <div class="stat-row"><span class="stat-row-label">신청일</span><span class="stat-row-value" id="mApplied">—</span></div>
+      <div class="stat-row"><span class="stat-row-label">상태</span><span class="stat-row-value" id="mStatus">—</span></div>
+      <div class="form-group" id="rejectReasonGroup" style="display:none;margin-top:var(--space-4);">
+        <label class="form-label">반려 사유</label>
+        <textarea class="form-textarea" id="rejectReason" placeholder="반려 사유를 입력하세요..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer" id="modalFooter">
+      <button class="btn btn-secondary" onclick="closeModal('detailModal')">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.16.0/browser/overlayscrollbars.browser.es5.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/layout.js"></script>
+<script>
+  initLayout('requests.html');
+
+  const requests = [
+    { id:1, name:'김민준', dept:'개발팀',   type:'연차',     period:'2026.05.20 ~ 2026.05.21', days:'2일',   applied:'2026.05.12', status:'pending'  },
+    { id:2, name:'이서연', dept:'마케팅팀', type:'반차(오전)', period:'2026.05.16',             days:'0.5일', applied:'2026.05.13', status:'pending'  },
+    { id:3, name:'박도윤', dept:'영업팀',   type:'연차',     period:'2026.05.22 ~ 2026.05.23', days:'2일',   applied:'2026.05.14', status:'pending'  },
+    { id:4, name:'최수아', dept:'인사팀',   type:'연차',     period:'2026.05.19',              days:'1일',   applied:'2026.05.14', status:'pending'  },
+    { id:5, name:'한준서', dept:'개발팀',   type:'병가',     period:'2026.05.13',              days:'1일',   applied:'2026.05.12', status:'approved' },
+    { id:6, name:'오지민', dept:'마케팅팀', type:'연차',     period:'2026.05.05 ~ 2026.05.09', days:'5일',   applied:'2026.04.28', status:'approved' },
+    { id:7, name:'신예원', dept:'영업팀',   type:'경조사',   period:'2026.05.02',              days:'1일',   applied:'2026.04.30', status:'approved' },
+    { id:8, name:'정하은', dept:'기획팀',   type:'연차',     period:'2026.04.25 ~ 2026.04.28', days:'4일',   applied:'2026.04.18', status:'approved' },
+    { id:9, name:'윤현우', dept:'기획팀',   type:'반차(오후)', period:'2026.04.29',            days:'0.5일', applied:'2026.04.25', status:'rejected' },
+    { id:10,name:'장민서', dept:'인사팀',   type:'반차(오전)', period:'2026.04.20',            days:'0.5일', applied:'2026.04.17', status:'rejected' },
+  ];
+
+  const statusMap = {
+    pending:  { label:'대기',  badge:'badge-warning' },
+    approved: { label:'승인',  badge:'badge-success' },
+    rejected: { label:'반려',  badge:'badge-danger'  },
+  };
+
+  let currentFilter = 'all';
+  let currentSearch = '';
+  let currentDept = '';
+  let currentType = '';
+
+  function renderTable() {
+    const body = document.getElementById('requestBody');
+    const filtered = requests.filter(r => {
+      const matchStatus = currentFilter === 'all' || r.status === currentFilter;
+      const matchSearch = !currentSearch || r.name.includes(currentSearch) || r.dept.includes(currentSearch);
+      const matchDept = !currentDept || r.dept === currentDept;
+      const matchType = !currentType || r.type.startsWith(currentType);
+      return matchStatus && matchSearch && matchDept && matchType;
+    });
+
+    body.innerHTML = filtered.map(r => {
+      const st = statusMap[r.status];
+      const actions = r.status === 'pending'
+        ? `<div style="display:flex;gap:6px;justify-content:center;">
+             <button class="btn btn-primary btn-sm" onclick="handleApprove(${r.id})">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="20 6 9 17 4 12"/></svg>승인
+             </button>
+             <button class="btn btn-danger btn-sm" onclick="handleReject(${r.id})">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>반려
+             </button>
+           </div>`
+        : `<button class="btn btn-secondary btn-sm" onclick="showDetail(${r.id})">상세</button>`;
+
+      return `
+        <tr data-status="${r.status}">
+          <td class="text-left"><div class="table-avatar"><div class="avatar-circle">${r.name[0]}</div>${r.name}</div></td>
+          <td><span class="badge badge-neutral">${r.dept}</span></td>
+          <td><span class="badge badge-neutral">${r.type}</span></td>
+          <td class="text-secondary" style="font-size:var(--text-xs);">${r.period}</td>
+          <td><strong>${r.days}</strong></td>
+          <td class="text-secondary">${r.applied}</td>
+          <td><span class="badge ${st.badge}">${st.label}</span></td>
+          <td>${actions}</td>
+        </tr>
+      `;
+    }).join('') || `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--color-text-tertiary);">신청 내역이 없습니다</td></tr>`;
+  }
+
+  function showDetail(id) {
+    const r = requests.find(x => x.id === id);
+    const st = statusMap[r.status];
+    document.getElementById('modalTitle').textContent = r.name + ' 신청 상세';
+    document.getElementById('mName').textContent = r.name;
+    document.getElementById('mDept').textContent = r.dept;
+    document.getElementById('mType').textContent = r.type;
+    document.getElementById('mPeriod').textContent = r.period;
+    document.getElementById('mDays').textContent = r.days;
+    document.getElementById('mApplied').textContent = r.applied;
+    document.getElementById('mStatus').innerHTML = `<span class="badge ${st.badge}">${st.label}</span>`;
+    document.getElementById('rejectReasonGroup').style.display = 'none';
+    document.getElementById('modalFooter').innerHTML = `<button class="btn btn-secondary" onclick="closeModal('detailModal')">닫기</button>`;
+    openModal('detailModal');
+  }
+
+  function handleApprove(id) {
+    const r = requests.find(x => x.id === id);
+    document.getElementById('modalTitle').textContent = '승인 확인';
+    document.getElementById('mName').textContent = r.name;
+    document.getElementById('mDept').textContent = r.dept;
+    document.getElementById('mType').textContent = r.type;
+    document.getElementById('mPeriod').textContent = r.period;
+    document.getElementById('mDays').textContent = r.days;
+    document.getElementById('mApplied').textContent = r.applied;
+    document.getElementById('mStatus').innerHTML = `<span class="badge badge-warning">대기</span>`;
+    document.getElementById('rejectReasonGroup').style.display = 'none';
+    document.getElementById('modalFooter').innerHTML = `
+      <button class="btn btn-secondary" onclick="closeModal('detailModal')">취소</button>
+      <button class="btn btn-primary" onclick="confirmApprove(${id})">승인 확정</button>
+    `;
+    openModal('detailModal');
+  }
+
+  function confirmApprove(id) {
+    const r = requests.find(x => x.id === id);
+    r.status = 'approved';
+    closeModal('detailModal');
+    renderTable();
+    updatePendingCount();
+  }
+
+  function handleReject(id) {
+    const r = requests.find(x => x.id === id);
+    document.getElementById('modalTitle').textContent = '반려 처리';
+    document.getElementById('mName').textContent = r.name;
+    document.getElementById('mDept').textContent = r.dept;
+    document.getElementById('mType').textContent = r.type;
+    document.getElementById('mPeriod').textContent = r.period;
+    document.getElementById('mDays').textContent = r.days;
+    document.getElementById('mApplied').textContent = r.applied;
+    document.getElementById('mStatus').innerHTML = `<span class="badge badge-warning">대기</span>`;
+    document.getElementById('rejectReasonGroup').style.display = 'block';
+    document.getElementById('rejectReason').value = '';
+    document.getElementById('modalFooter').innerHTML = `
+      <button class="btn btn-secondary" onclick="closeModal('detailModal')">취소</button>
+      <button class="btn btn-danger" onclick="confirmReject(${id})">반려 확정</button>
+    `;
+    openModal('detailModal');
+  }
+
+  function confirmReject(id) {
+    const r = requests.find(x => x.id === id);
+    r.status = 'rejected';
+    closeModal('detailModal');
+    renderTable();
+    updatePendingCount();
+  }
+
+  function updatePendingCount() {
+    const count = requests.filter(r => r.status === 'pending').length;
+    document.getElementById('pendingCount').textContent = count;
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderTable();
+    });
+  });
+
+  document.getElementById('searchInput').addEventListener('input', e => { currentSearch = e.target.value.trim(); renderTable(); });
+  document.getElementById('deptFilter').addEventListener('change', e => { currentDept = e.target.value; renderTable(); });
+  document.getElementById('typeFilter').addEventListener('change', e => { currentType = e.target.value; renderTable(); });
+
+  renderTable();
+</script>
+</body>
+</html>
