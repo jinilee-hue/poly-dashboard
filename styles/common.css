@@ -109,6 +109,7 @@ a { text-decoration: none; }
 
 .sidebar-footer {
   padding: var(--space-4);
+  padding-bottom: var(--space-6);
   flex-shrink: 0;
 }
 
@@ -335,6 +336,15 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .badge-info    { background: var(--color-primary-light); color: var(--color-primary); }
 .badge-neutral { background: var(--color-bg-muted);     color: var(--color-text-secondary); }
 .badge-primary { background: var(--color-primary-light); color: var(--color-primary); }
+.badge-poly    { background: #E8F0FF; color: #0066FF; }
+.badge-canb    { background: #FAEAF3; color: #BC216D; }
+/* 단일 브랜드 모드에서는 브랜드 배지 + 배지 컨테이너 숨김 — 전체 모드에서만 표시 */
+[data-brand="poly"] .badge-poly,
+[data-brand="poly"] .badge-canb,
+[data-brand="canb"] .badge-poly,
+[data-brand="canb"] .badge-canb { display: none; }
+[data-brand="poly"] .cl-item-badges,
+[data-brand="canb"] .cl-item-badges { display: none; }
 
 /* ─── BUTTONS ─────────────────────────────────── */
 .btn {
@@ -354,7 +364,7 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .btn-primary:hover { background: var(--color-primary-dark); }
 
 .btn-secondary { background: var(--color-bg); color: var(--color-text-secondary); border: var(--border-default); }
-.btn-secondary:hover { color: var(--color-primary); border-color: rgba(0,78,162,0.50); }
+.btn-secondary:hover { color: var(--color-primary); border-color: var(--color-primary-a50); }
 
 .btn-ghost { background: #4B5563; color: #FFFFFF; border: 1px solid #4B5563; }
 .btn-ghost:hover { background: #374151; border-color: #374151; }
@@ -387,12 +397,18 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .search-box input::placeholder { color: var(--color-text-tertiary); }
 
 select.filter-select {
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-8) var(--space-2) var(--space-3);
   border: var(--border-default);
   border-radius: var(--radius-sm);
   font-size: var(--text-sm);
   color: var(--color-text-primary);
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   cursor: pointer; outline: none;
   font-family: var(--font-sans);
   transition: border-color 0.15s ease;
@@ -851,6 +867,16 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 /* ─── DARK MODE OVERRIDES ────────────────────── */
 [data-theme="dark"] { color-scheme: dark; }
 
+[data-theme="dark"] .icon-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+[data-theme="dark"] .poly-sidebar-brand {
+  filter: brightness(0) invert(1);
+}
+
 /* ─── DARK SIDEBAR ────────────────────────────── */
 [data-theme="dark"] .sidebar-logo-icon {
   background: rgba(255,255,255,0.10);
@@ -876,6 +902,9 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-theme="dark"] .form-textarea:focus,
 [data-theme="dark"] select.filter-select:focus {
   box-shadow: 0 0 0 3px rgba(0,78,162,0.35);
+}
+[data-theme="dark"] select.filter-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
 }
 
 [data-theme="dark"] .cs-trigger.open { box-shadow: 0 0 0 3px rgba(0,78,162,0.35); }

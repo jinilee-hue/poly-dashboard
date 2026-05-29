@@ -39,6 +39,9 @@
   --color-sidebar-border:     #E2E5EA;
   --color-sidebar-section:    #9CA3AF;
 
+  /* ── Brand alpha — 버튼 hover·focus 색상 (JS BRAND_TOKENS에서 오버라이드) ─ */
+  --color-primary-a50: rgba(0,102,255,0.50);
+
   /* ── Chart — 라이트 모드: #0066FF(rgb 0,102,255) 투명도 단계 ─ */
   --chart-1: rgba(0,102,255,0.85);
   --chart-2: rgba(0,102,255,0.60);

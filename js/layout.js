@@ -202,11 +202,17 @@ function _csWrapSelect(sel) {
   sel.style.display = 'none';
   wrap.appendChild(sel);
 
+  /* 초기화 시 드롭다운 자연 너비 측정 → 트리거·드롭다운 너비 고정 */
+  var naturalW = dropdown.offsetWidth;
+  if (naturalW > 80) {
+    trigger.style.width = naturalW + 'px';
+    dropdown.style.width = naturalW + 'px';
+  }
+
   function positionDropdown() {
     var rect = trigger.getBoundingClientRect();
     var dropH = dropdown.scrollHeight || 200;
     dropdown.style.left = rect.left + 'px';
-    dropdown.style.minWidth = Math.max(rect.width, 80) + 'px';
     if (window.innerHeight - rect.bottom - 6 < dropH && rect.top > dropH + 6) {
       dropdown.style.top = (rect.top - dropH - 6) + 'px';
     } else {
