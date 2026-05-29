@@ -1,4 +1,4 @@
-# Poly Dashboard — 프로젝트 컨텍스트
+﻿# Poly Dashboard — 프로젝트 컨텍스트
 
 EduPoly 캠퍼스 관리 대시보드입니다. 작업 전 이 컨텍스트를 기준으로 삼으세요.
 
@@ -10,6 +10,7 @@ EduPoly 캠퍼스 관리 대시보드입니다. 작업 전 이 컨텍스트를 �
 - **경로**: `d:\이진희\#WORK\#AI\Claude\dashboard`
 - **빌드**: 없음 — Vanilla JS + HTML, 브라우저에서 직접 열기
 - **담당자**: 이진희 (관리자, jini.lee@edu-poly.com)
+- **디자인 Kit**: https://jinilee-hue.github.io/poly-dashboard/download.html
 
 ---
 
@@ -78,6 +79,24 @@ dashboard/
 | `--color-primary-light` | `#E8F0FF` | 배지·아이콘 배경 틴트 |
 | `--color-primary-dark` | `#0052CC` | 호버·강조 |
 | `--color-primary-deeper` | `#003D99` | 가장 진한 단계 |
+
+---
+
+## CSS 변수 색상 규칙 (필수)
+
+**브랜드 색상을 하드코딩하면 브랜드 전환 불가. 반드시 CSS 변수 사용.**
+
+| 금지 (하드코딩) | 대체 CSS 변수 |
+|----------------|--------------|
+| `rgba(0,102,255,0.08)` | `var(--color-primary-a08)` |
+| `rgba(0,102,255,0.10)` | `var(--color-primary-a10)` |
+| `rgba(0,102,255,0.15)` | `var(--color-primary-a15)` |
+| `rgba(0,102,255,0.25)` | `var(--color-primary-a25)` |
+| `rgba(0,102,255,0.30)` | `var(--color-primary-a30)` |
+| `rgba(0,102,255,0.50)` | `var(--color-primary-a50)` |
+
+- 박스 그림자·포커스 링·배경 어디서도 `rgba(0,102,255,...)` 직접 사용 금지
+- `#0066FF` 하드코딩도 금지 — `var(--color-primary)` 사용
 
 ---
 
@@ -273,6 +292,8 @@ flatpickr('#inputId', {
 | 필터바 위치 | 카드 내부 금지 — 반드시 카드 외부 독립 배치 |
 | 막대 그래프 두께 | `barPercentage: 0.45` + `maxBarThickness: 32` 항상 적용 |
 | 라인 차트 점 | dataset 레벨에서 `pointBackgroundColor: c[0]`, `pointBorderColor: 'transparent'` 명시 필수 — 전역 기본값이 링 스타일이라 오버라이드 안 하면 흰 링으로 표시됨 |
+| `.icon-btn` 크기 | `width: 36px; height: 36px` 고정 — 인라인 스타일로 변경 금지. `common.css` 정의 클래스 그대로 사용 |
+| `.poly-nav-label` | LNB 섹션 헤더 사용 시 각 HTML `<style>` 블록에 직접 정의 필수 (common.css 미정의). 누락 시 섹션 헤더가 일반 텍스트 스타일로 렌더링됨 |
 
 ---
 
