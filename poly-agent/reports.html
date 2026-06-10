@@ -510,11 +510,133 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ko.js"></script>
 <script>
+  function _fpCalDropdown(cal, triggerEl, items, onSelect) {
+    var dropdown = document.createElement('div');
+    dropdown.className = 'fp-cal-dropdown';
+    dropdown.setAttribute('role', 'listbox');
+    cal.appendChild(dropdown);
+    var ul = document.createElement('ul');
+    items.forEach(function(item) {
+      var li = document.createElement('li');
+      li.className = 'cs-option' + (item.selected ? ' selected' : '');
+      li.setAttribute('role', 'option');
+      li.textContent = item.text;
+      li.addEventListener('click', function(e) {
+        e.stopPropagation();
+        ul.querySelectorAll('.cs-option').forEach(function(o) { o.classList.remove('selected'); });
+        li.classList.add('selected');
+        close();
+        onSelect(item.value);
+      });
+      ul.appendChild(li);
+    });
+    dropdown.appendChild(ul);
+    function open() {
+      cal.querySelectorAll('.fp-cal-dropdown.open').forEach(function(d) { d.classList.remove('open'); });
+      cal.querySelectorAll('.cs-trigger.open,.cs-year-trigger.open').forEach(function(t) { t.classList.remove('open'); t.setAttribute('aria-expanded','false'); });
+      var headerH = (cal.querySelector('.flatpickr-months') || {}).offsetHeight || 54;
+      dropdown.style.top = headerH + 'px';
+      dropdown.classList.add('open');
+      triggerEl.classList.add('open');
+      triggerEl.setAttribute('aria-expanded', 'true');
+      setTimeout(function() { var s = dropdown.querySelector('.cs-option.selected'); if (s) s.scrollIntoView({block:'center'}); }, 10);
+    }
+    function close() {
+      dropdown.classList.remove('open'); dropdown.style.top = '';
+      triggerEl.classList.remove('open'); triggerEl.setAttribute('aria-expanded', 'false');
+    }
+    triggerEl.addEventListener('click', function(e) { e.stopPropagation(); dropdown.classList.contains('open') ? close() : open(); });
+    dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+    dropdown._close = close;
+    return { dropdown: dropdown, close: close };
+  }
+  function initFlatpickrSelects(fp) {
+    var cal = fp.calendarContainer;
+    var monthSel = cal.querySelector('.flatpickr-monthDropdown-months');
+    if (monthSel && !monthSel.dataset.csInit) {
+      monthSel.dataset.csInit = '1';
+      var moOptions = Array.from(monthSel.options);
+      var moIdx = fp.currentMonth;
+      var moTrigger = document.createElement('button');
+      moTrigger.type = 'button'; moTrigger.className = 'cs-trigger fp-mo-trigger';
+      moTrigger.setAttribute('aria-haspopup','listbox'); moTrigger.setAttribute('aria-expanded','false');
+      var moLabel = document.createElement('span');
+      moLabel.className = 'cs-label'; moLabel.textContent = moOptions[moIdx] ? moOptions[moIdx].text : '';
+      monthSel._csLabel = moLabel; moTrigger.appendChild(moLabel);
+      var moCtrl = _fpCalDropdown(cal, moTrigger, moOptions.map(function(o,i) { return {text:o.text,value:o.value,selected:i===moIdx}; }), function(val) {
+        monthSel.value = val; var idx = monthSel.selectedIndex;
+        moLabel.textContent = moOptions[idx] ? moOptions[idx].text : '';
+        monthSel.dispatchEvent(new Event('change',{bubbles:true}));
+      });
+      monthSel._csDropdown = moCtrl.dropdown;
+      function _syncMoArrows() {
+        var open = moCtrl.dropdown.classList.contains('open');
+        var pv = cal.querySelector('.flatpickr-prev-month'), nx = cal.querySelector('.flatpickr-next-month');
+        if (pv) pv.style.visibility = open ? 'hidden' : ''; if (nx) nx.style.visibility = open ? 'hidden' : '';
+      }
+      moTrigger.addEventListener('click', _syncMoArrows); document.addEventListener('click', _syncMoArrows);
+      monthSel.parentNode.insertBefore(moTrigger, monthSel); monthSel.style.display = 'none';
+    }
+    var numWrap = cal.querySelector('.numInputWrapper');
+    var curMonthDiv = cal.querySelector('.flatpickr-current-month');
+    if (!numWrap || !curMonthDiv || curMonthDiv.dataset.csYearInit) return;
+    curMonthDiv.dataset.csYearInit = '1';
+    var curY = fp.currentYear, yrPageBase = curY;
+    var yrTrigger = document.createElement('button');
+    yrTrigger.type = 'button'; yrTrigger.className = 'cs-trigger cs-year-trigger';
+    yrTrigger.setAttribute('aria-haspopup','listbox'); yrTrigger.setAttribute('aria-expanded','false');
+    var yrLabel = document.createElement('span');
+    yrLabel.className = 'cs-label'; yrLabel.textContent = curY + '년';
+    curMonthDiv._csLabel = yrLabel; yrTrigger.appendChild(yrLabel);
+    function _yrItems(base) {
+      var items = []; for (var y = base-10; y <= base+10; y++) items.push({text:String(y),value:y,selected:y===fp.currentYear}); return items;
+    }
+    var yrCtrl = _fpCalDropdown(cal, yrTrigger, _yrItems(yrPageBase), function(val) { yrLabel.textContent = val + '년'; fp.jumpToDate(new Date(val,fp.currentMonth,1)); });
+    curMonthDiv._csDropdown = yrCtrl.dropdown;
+    function _refreshYrList(newBase) {
+      yrPageBase = newBase; var ul = yrCtrl.dropdown.querySelector('ul'); if (!ul) return; ul.innerHTML = '';
+      _yrItems(newBase).forEach(function(item) {
+        var li = document.createElement('li'); li.className = 'cs-option'+(item.selected?' selected':'');
+        li.textContent = item.text; li.setAttribute('role','option'); li.setAttribute('aria-selected',String(item.selected));
+        li.addEventListener('click', function(e) { e.stopPropagation(); ul.querySelectorAll('.cs-option').forEach(function(o){o.classList.remove('selected');}); li.classList.add('selected'); yrCtrl.close(); yrLabel.textContent = item.value+'년'; fp.jumpToDate(new Date(item.value,fp.currentMonth,1)); });
+        ul.appendChild(li);
+      });
+    }
+    var prevArr = cal.querySelector('.flatpickr-prev-month'), nextArr = cal.querySelector('.flatpickr-next-month');
+    function _yrNav(e) { if (!yrCtrl.dropdown.classList.contains('open')) return; e.stopImmediatePropagation(); e.preventDefault(); _refreshYrList(yrPageBase+(e.currentTarget===prevArr?-4:4)); }
+    if (prevArr) prevArr.addEventListener('click',_yrNav,true); if (nextArr) nextArr.addEventListener('click',_yrNav,true);
+    yrTrigger.addEventListener('click', function() {
+      var pv=cal.querySelector('.flatpickr-prev-month'),nx=cal.querySelector('.flatpickr-next-month');
+      if(pv)pv.style.visibility=''; if(nx)nx.style.visibility='';
+      if(!yrCtrl.dropdown.classList.contains('open'))return;
+      if(yrPageBase!==fp.currentYear){yrPageBase=fp.currentYear;_refreshYrList(yrPageBase);}
+    });
+    cal.querySelectorAll('.numInputWrapper').forEach(function(nw){nw.style.display='none';});
+    cal.querySelectorAll('.flatpickr-monthDropdown-months').forEach(function(s){s.style.display='none';});
+    curMonthDiv.appendChild(yrTrigger); syncFlatpickrMonthLabel(fp);
+  }
+  function syncFlatpickrMonthLabel(fp) {
+    var cal = fp.calendarContainer;
+    var monthSel = cal.querySelector('.flatpickr-monthDropdown-months');
+    if (monthSel && monthSel._csLabel) {
+      var idx = fp.currentMonth;
+      monthSel._csLabel.textContent = monthSel.options[idx] ? monthSel.options[idx].text : '';
+      if (monthSel._csDropdown) monthSel._csDropdown.querySelectorAll('.cs-option').forEach(function(o,i){o.classList.toggle('selected',i===idx);o.setAttribute('aria-selected',String(i===idx));});
+    }
+    var curMonthDiv = cal.querySelector('.flatpickr-current-month');
+    if (curMonthDiv && curMonthDiv._csLabel) {
+      curMonthDiv._csLabel.textContent = fp.currentYear + '년';
+      if (curMonthDiv._csDropdown) curMonthDiv._csDropdown.querySelectorAll('.cs-option').forEach(function(o){var m=parseInt(o.textContent)===fp.currentYear;o.classList.toggle('selected',m);});
+    }
+  }
+
   var reportsDateFp = flatpickr('#reportsDateInput', {
     locale: 'ko',
     dateFormat: 'Y.m.d',
     allowInput: true,
     disableMobile: true,
+    onReady: function(_, __, fp) { initFlatpickrSelects(fp); },
+    onMonthChange: function(_, __, fp) { syncFlatpickrMonthLabel(fp); },
     onOpen: function(_, __, fp) { fp.calendarContainer.style.marginTop = '1px'; },
   });
 
