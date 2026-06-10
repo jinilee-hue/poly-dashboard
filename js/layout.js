@@ -222,7 +222,7 @@ function _csWrapSelect(sel) {
     });
     document.body.removeChild(probe);
     var trigW = Math.max(maxW + 20, 110);
-    var dropW = Math.max(maxW + 6,  92);
+    var dropW = Math.max(trigW, maxW + 6, 92);
     trigger.style.width = trigW + 'px';
     dropdown.style.width = dropW + 'px';
   };
@@ -392,6 +392,17 @@ function initFlatpickrSelects(fp) {
     );
     monthSel._csDropdown = moCtrl.dropdown;
 
+    /* 월 드롭다운 열리면 < > 숨김, 닫히면 복원 */
+    function _syncMoArrows() {
+      var open = moCtrl.dropdown.classList.contains('open');
+      var pv = cal.querySelector('.flatpickr-prev-month');
+      var nx = cal.querySelector('.flatpickr-next-month');
+      if (pv) pv.style.visibility = open ? 'hidden' : '';
+      if (nx) nx.style.visibility = open ? 'hidden' : '';
+    }
+    moTrigger.addEventListener('click', _syncMoArrows);
+    document.addEventListener('click', _syncMoArrows);
+
     monthSel.parentNode.insertBefore(moTrigger, monthSel);
     monthSel.style.display = 'none';
   }
@@ -410,7 +421,7 @@ function initFlatpickrSelects(fp) {
   yrTrigger.setAttribute('aria-expanded', 'false');
   var yrLabel = document.createElement('span');
   yrLabel.className = 'cs-label';
-  yrLabel.textContent = curY;
+  yrLabel.textContent = curY + '년';
   currentMonthDiv._csLabel = yrLabel;
   yrTrigger.appendChild(yrLabel);
 
@@ -418,7 +429,7 @@ function initFlatpickrSelects(fp) {
   for (var y = curY - 10; y <= curY + 10; y++) years.push({ text: String(y), value: y, selected: y === curY });
 
   var yrCtrl = _fpCalDropdown(cal, yrTrigger, years, function(val) {
-    yrLabel.textContent = val;
+    yrLabel.textContent = val + '년';
     fp.jumpToDate(new Date(val, fp.currentMonth, 1));
   });
   currentMonthDiv._csDropdown = yrCtrl.dropdown;
@@ -448,7 +459,7 @@ function syncFlatpickrMonthLabel(fp) {
   /* 연도 */
   var currentMonthDiv = cal.querySelector('.flatpickr-current-month');
   if (currentMonthDiv && currentMonthDiv._csLabel) {
-    currentMonthDiv._csLabel.textContent = fp.currentYear;
+    currentMonthDiv._csLabel.textContent = fp.currentYear + '년';
     if (currentMonthDiv._csDropdown) {
       currentMonthDiv._csDropdown.querySelectorAll('.cs-option').forEach(function(o) {
         var match = parseInt(o.textContent) === fp.currentYear;
