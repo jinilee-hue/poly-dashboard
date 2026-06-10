@@ -7,6 +7,10 @@
   --color-primary-dark:   #0052CC;   /* 호버·강조 */
   --color-primary-deeper: #003D99;   /* 가장 진한 블루 */
 
+  /* ── CANB Brand Magenta (멀티 브랜드 뷰 전용) ── */
+  --color-canb-primary:   #BC216D;
+  --color-canb-light:     #FAEAF3;
+
   /* ── Neutral ────────────────────────────────── */
   --color-bg:             #FFFFFF;
   --color-bg-subtle:      #F7F8FA;

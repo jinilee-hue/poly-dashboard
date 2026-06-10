@@ -333,11 +333,10 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .badge-success { background: var(--color-success-light); color: var(--color-success); }
 .badge-warning { background: var(--color-warning-light); color: var(--color-warning); }
 .badge-danger  { background: var(--color-danger-light);  color: var(--color-danger); }
-.badge-info    { background: var(--color-primary-light); color: var(--color-primary); }
 .badge-neutral { background: var(--color-bg-muted);     color: var(--color-text-secondary); }
 .badge-primary { background: var(--color-primary-light); color: var(--color-primary); }
-.badge-poly    { background: #E8F0FF; color: #0066FF; }
-.badge-canb    { background: #FAEAF3; color: #BC216D; }
+.badge-poly    { background: var(--color-primary-light); color: var(--color-primary); }
+.badge-canb    { background: var(--color-canb-light);    color: var(--color-canb-primary); }
 /* 단일 브랜드 모드에서는 브랜드 배지 + 배지 컨테이너 숨김 — 전체 모드에서만 표시 */
 [data-brand="poly"] .badge-poly,
 [data-brand="poly"] .badge-canb,
@@ -613,7 +612,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 .flatpickr-current-month .cs-trigger.open,
 .flatpickr-current-month .cs-year-trigger.open { background: rgba(0,0,0,0.09) !important; box-shadow: none !important; }
 .flatpickr-current-month .cs-chevron { display: none !important; }
-/* 달력 내부 드롭다운 — 절대 위치, 전체 폭, 스크롤 */
+/* 달력 내부 드롭다운 — 절대 위치, 전체 폭, 4열 그리드 */
 .flatpickr-calendar { overflow: visible !important; }
 .fp-cal-dropdown {
   position: absolute;
@@ -626,24 +625,26 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   box-shadow: var(--shadow-md);
   z-index: 9999;
-  max-height: 200px;
-  overflow-y: auto;
+  bottom: 0;
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 .fp-cal-dropdown.open { top: 0; opacity: 1; visibility: visible; pointer-events: auto; }
-.fp-cal-dropdown ul { list-style: none; padding: 4px 0; margin: 0; }
+.fp-cal-dropdown ul { list-style: none; padding: 8px; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; align-content: start; }
 .fp-cal-dropdown .cs-option {
-  padding: 8px 16px;
+  padding: 7px 4px;
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: background 0.1s ease;
+  text-align: center;
+  border-radius: var(--radius-sm);
 }
 .fp-cal-dropdown .cs-option:hover { background: var(--color-bg-muted); color: var(--color-text-primary); }
-.fp-cal-dropdown .cs-option.selected { color: var(--color-primary); font-weight: var(--weight-semibold); background: var(--color-primary-light); }
+.fp-cal-dropdown .cs-option.selected { color: var(--color-primary); font-weight: var(--weight-semibold); background: var(--color-primary-light); border-radius: var(--radius-sm); }
 
 /* Flatpickr trigger input */
 .fp-date-input {
