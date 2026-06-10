@@ -202,11 +202,33 @@ function _csWrapSelect(sel) {
   sel.style.display = 'none';
   wrap.appendChild(sel);
 
-  /* 초기화 시 드롭다운 자연 너비 측정 → 트리거·드롭다운 너비 고정 */
-  var naturalW = dropdown.offsetWidth;
-  if (naturalW > 80) {
-    trigger.style.width = naturalW + 'px';
-    dropdown.style.width = naturalW + 'px';
+  /* 가장 긴 옵션 기준 너비 설정 — probe span 방식
+     dropdown 자체(.cs-dropdown)는 position:fixed+overflow:hidden 조합으로 offsetWidth가 부정확.
+     대신 .cs-option과 동일 폰트·패딩의 임시 span으로 텍스트를 직접 측정한 뒤 삭제한다.
+       probe.offsetWidth  = 텍스트 너비 + option 좌우 패딩(14px×2=28px)
+       trigW = maxW + 20  = maxW - 28(option pad) + 48(trigger pad 46 + border 2), 최소 110px
+       dropW = maxW + 6   = maxW + border 2 + 여유 4px,                             최소 92px  */
+  var _calcDropdownWidth = function() {
+    var probe = document.createElement('span');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:fixed;top:0;left:-9999px;visibility:hidden;' +
+      'white-space:nowrap;padding:0 14px;border:none;outline:none;pointer-events:none;' +
+      'font-size:var(--text-sm);font-family:var(--font-sans);font-weight:400;';
+    document.body.appendChild(probe);
+    var maxW = 0;
+    dropdown.querySelectorAll('.cs-option').forEach(function(li) {
+      probe.textContent = li.textContent;
+      if (probe.offsetWidth > maxW) maxW = probe.offsetWidth;
+    });
+    document.body.removeChild(probe);
+    var trigW = Math.max(maxW + 20, 110);
+    var dropW = Math.max(maxW + 6,  92);
+    trigger.style.width = trigW + 'px';
+    dropdown.style.width = dropW + 'px';
+  };
+  _calcDropdownWidth();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(_calcDropdownWidth);
   }
 
   function positionDropdown() {
