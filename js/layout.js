@@ -162,6 +162,11 @@ function initLayout(currentHref) {
           dropdown.appendChild(a);
         });
 
+        /* 클릭 시 첫 번째 자식 페이지로 이동 */
+        trigger.addEventListener('click', function () {
+          window.location.href = group.children[0].href;
+        });
+
         groupEl.appendChild(trigger);
         groupEl.appendChild(dropdown);
         topnav.appendChild(groupEl);
