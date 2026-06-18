@@ -1173,7 +1173,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-layout="top"] .topnav-bar            { border-bottom: none; }
 [data-layout="top"] .topnav-item,
 [data-layout="top"] .topnav-group-trigger  { margin-bottom: 0; }
-[data-layout="top"] .topbar                { height: 38px; padding: 0 var(--space-6); background: var(--color-bg-muted); border-bottom: none; }
+[data-layout="top"] .topbar                { height: 38px; padding: 0 var(--space-6); background: var(--color-bg-subtle); border-bottom: none; }
 [data-layout="top"] .breadcrumb-current    { font-size: var(--text-xs); font-weight: var(--weight-medium); }
 [data-layout="top"] .breadcrumb-ancestor   { font-size: var(--text-xs); }
 [data-layout="top"] .topbar-title          { font-size: var(--text-xs); font-weight: var(--weight-medium); }
