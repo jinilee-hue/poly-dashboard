@@ -1180,6 +1180,8 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-layout="top"] .breadcrumb-home svg   { width: 13px; height: 13px; }
 [data-layout="top"] .breadcrumb-sep        { font-size: var(--text-xs); }
 [data-layout="top"] .page-content         { background: var(--color-bg); }
+[data-layout="top"] .chart-grid-2,
+[data-layout="top"] .chart-grid-3        { gap: var(--space-12); }
 
 /* ── 최상단 네비바 (topnav-bar) ── */
 .topnav-bar {
