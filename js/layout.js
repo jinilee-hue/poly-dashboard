@@ -268,6 +268,19 @@ function initLayout(currentHref) {
   }
   _syncThemeBtn();
 
+  /* top 모드: 페이지 고유 버튼(내보내기·알림 등)도 topnav-bar-actions로 이동 */
+  if (navMode === 'top') {
+    var _topActionsTarget = document.querySelector('.topnav-bar-actions');
+    var _pageActions = document.querySelector('.topbar-actions');
+    if (_topActionsTarget && _pageActions) {
+      var _pageButtons = Array.from(_pageActions.children);
+      var _refBtn = _topActionsTarget.firstChild;
+      _pageButtons.forEach(function (btn) {
+        _topActionsTarget.insertBefore(btn, _refBtn);
+      });
+    }
+  }
+
   _initTabBar(currentHref);
 }
 
