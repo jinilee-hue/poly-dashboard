@@ -351,6 +351,8 @@ a { text-decoration: none; }
 .card-body { padding: 12px var(--space-6) var(--space-6); }
 .card-body.no-pad { padding: 0; }
 .card-body.flush-x { padding-left: 0; padding-right: 0; }
+.card.flush-x > .card-header,
+.card.flush-x > .card-body { padding-left: 0; padding-right: 0; }
 
 /* ─── CHART GRIDS ─────────────────────────────── */
 .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-8); }
