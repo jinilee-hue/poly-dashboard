@@ -987,7 +987,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   position: fixed;
   bottom: 0; left: 240px; right: 0;
   height: 44px;
-  background: var(--color-bg);
+  background: var(--color-bg-subtle);
   border-top: var(--border-default);
   display: flex;
   align-items: stretch;
