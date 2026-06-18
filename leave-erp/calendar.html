@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>연차 캘린더 | LeaveERP</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.16.0/styles/overlayscrollbars.min.css">
+  <link rel="stylesheet" href="styles/common.css">
+  <style>
+    .cal-layout {
+      display: grid;
+      grid-template-columns: 1fr 272px;
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    .cal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-5);
+    }
+
+    .cal-nav-center {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .cal-nav-title {
+      font-size: var(--text-xl);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+      min-width: 140px;
+      text-align: center;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: var(--border-default);
+      background: var(--color-bg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cal-dow {
+      padding: 10px 0;
+      text-align: center;
+      font-size: var(--text-xs);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-tertiary);
+      background: var(--color-bg-subtle);
+      border-bottom: var(--border-default);
+      letter-spacing: 0.3px;
+    }
+    .cal-dow.sun { color: #EF4444; }
+    .cal-dow.sat { color: var(--color-primary); }
+
+    .cal-day {
+      min-height: 108px;
+      padding: var(--space-2);
+      border-right: var(--border-default);
+      border-bottom: var(--border-default);
+      background: var(--color-bg);
+      cursor: pointer;
+      transition: background 0.1s ease;
+    }
+    .cal-day:nth-child(7n) { border-right: none; }
+    .cal-day:hover { background: var(--color-bg-subtle); }
+    .cal-day.empty { background: var(--color-bg-subtle); cursor: default; pointer-events: none; }
+    .cal-day.selected { background: var(--color-primary-light); }
+    .cal-day.selected:hover { background: var(--color-primary-light); }
+
+    .cal-day-num {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--color-text-primary);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-1);
+      line-height: 1;
+    }
+    .cal-day.today .cal-day-num {
+      background: var(--color-primary);
+      color: #FFFFFF;
+    }
+    .cal-day.sun .cal-day-num { color: #EF4444; }
+    .cal-day.sat .cal-day-num { color: var(--color-primary); }
+    .cal-day.today .cal-day-num { color: #FFFFFF; }
+
+    .cal-events { display: flex; flex-direction: column; gap: 2px; }
+
+    .cal-event {
+      font-size: 11px;
+      font-weight: var(--weight-medium);
+      padding: 2px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 15px;
+    }
+    /* 라이트 모드: 밝은 기저색 투명도 스케일 */
+    .ev-annual  { background: var(--chart-6); color: var(--color-primary); }
+    .ev-half    { background: var(--chart-5); color: var(--color-primary); }
+    .ev-sick    { background: var(--chart-4); color: var(--color-primary); }
+    .ev-special { background: var(--chart-3); color: var(--color-primary); }
+
+    /* 다크 모드: 텍스트 컬러 오버라이드 */
+    [data-theme="dark"] .ev-annual,
+    [data-theme="dark"] .ev-half,
+    [data-theme="dark"] .ev-sick,
+    [data-theme="dark"] .ev-special { color: rgba(0,153,255,0.90); }
+    .ev-pending { opacity: 0.6; }
+
+    .cal-more {
+      font-size: 10px;
+      color: var(--color-text-tertiary);
+      padding: 1px 5px;
+    }
+
+    /* Detail panel */
+    .cal-detail-date {
+      font-size: var(--text-base);
+      font-weight: var(--weight-semibold);
+      color: var(--color-text-primary);
+      padding-bottom: var(--space-4);
+      margin-bottom: var(--space-2);
+      border-bottom: var(--border-default);
+    }
+
+    .cal-detail-count {
+      font-size: var(--text-xs);
+      color: var(--color-text-tertiary);
+      font-weight: var(--weight-normal);
+      margin-left: var(--space-2);
+    }
+
+    .cal-detail-empty {
+      text-align: center;
+      padding: var(--space-10) var(--space-4);
+      color: var(--color-text-tertiary);
+      font-size: var(--text-sm);
+      line-height: 1.7;
+    }
+
+    .cal-detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: var(--border-default);
+    }
+    .cal-detail-item:last-child { border-bottom: none; }
+
+    .cal-detail-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: var(--radius-full);
+      margin-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .cal-detail-name {
+      font-size: var(--text-sm);
+      font-weight: var(--weight-medium);
+      color: var(--color-text-primary);
+    }
+
+    .cal-detail-meta {
+      font-size: var(--text-xs);
+      color: var(--color-text-tertiary);
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .cal-legend {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      flex-wrap: wrap;
+      margin-top: var(--space-4);
+    }
+
+    .cal-legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: var(--text-xs);
+      color: var(--color-text-secondary);
+    }
+
+    .cal-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 1024px) {
+      .cal-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<aside class="sidebar" id="sidebar"></aside>
+
+<div class="main-content">
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="topbar-title">연차 캘린더</span>
+    </div>
+    <div class="topbar-actions"></div>
+  </header>
+
+  <main class="page-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">연차 캘린더</h1>
+        <p class="page-subtitle">날짜별 전사 휴가 현황을 한눈에 확인하세요</p>
+      </div>
+    </div>
+
+    <div class="cal-layout">
+      <!-- Calendar main -->
+      <div>
+        <div class="cal-nav">
+          <div class="cal-nav-center">
+            <button class="icon-btn" id="prevMonth" title="이전 달" aria-label="이전 달">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span class="cal-nav-title" id="calTitle"></span>
+            <button class="icon-btn" id="nextMonth" title="다음 달" aria-label="다음 달">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="todayBtn">오늘</button>
+        </div>
+
+        <div class="cal-grid" id="calGrid"></div>
+
+        <div class="cal-legend">
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:var(--chart-6);border:1px solid var(--chart-1);"></div>
+            <span>연차</span>
+          </div>
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:var(--chart-5);border:1px solid var(--chart-1);"></div>
+            <span>반차</span>
+          </div>
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:var(--chart-4);border:1px solid var(--chart-1);"></div>
+            <span>병가</span>
+          </div>
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:var(--chart-3);"></div>
+            <span>경조사</span>
+          </div>
+          <div class="cal-legend-item">
+            <div class="cal-legend-dot" style="background:var(--chart-6);border:1px dashed var(--chart-2);opacity:0.6;"></div>
+            <span>승인 대기</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail panel -->
+      <div class="card" style="overflow:visible;">
+        <div class="card-header">
+          <div class="card-title">선택한 날짜</div>
+        </div>
+        <div class="card-body">
+          <div class="cal-detail-date" id="detailDate">날짜를 선택하세요</div>
+          <div id="detailContent">
+            <div class="cal-detail-empty">날짜를 클릭하면<br>해당 일의 휴가 현황을<br>확인할 수 있습니다</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.16.0/browser/overlayscrollbars.browser.es5.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/layout.js"></script>
+<script>
+  initLayout('calendar.html');
+
+  const EVENTS = [
+    { name:'신예원', dept:'영업팀',   type:'경조사',    start:'2026-05-02', end:'2026-05-02', status:'approved' },
+    { name:'오지민', dept:'마케팅팀', type:'연차',      start:'2026-05-05', end:'2026-05-09', status:'approved' },
+    { name:'한준서', dept:'개발팀',   type:'병가',      start:'2026-05-13', end:'2026-05-13', status:'approved' },
+    { name:'이서연', dept:'마케팅팀', type:'반차(오전)', start:'2026-05-16', end:'2026-05-16', status:'pending'  },
+    { name:'최수아', dept:'인사팀',   type:'연차',      start:'2026-05-19', end:'2026-05-19', status:'pending'  },
+    { name:'김민준', dept:'개발팀',   type:'연차',      start:'2026-05-20', end:'2026-05-21', status:'pending'  },
+    { name:'박도윤', dept:'영업팀',   type:'연차',      start:'2026-05-22', end:'2026-05-23', status:'pending'  },
+    { name:'정하은', dept:'기획팀',   type:'연차',      start:'2026-04-25', end:'2026-04-28', status:'approved' },
+    { name:'윤현우', dept:'기획팀',   type:'반차(오후)', start:'2026-04-29', end:'2026-04-29', status:'rejected' },
+    { name:'장민서', dept:'인사팀',   type:'반차(오전)', start:'2026-04-20', end:'2026-04-20', status:'rejected' },
+    { name:'오지민', dept:'마케팅팀', type:'연차',      start:'2026-06-09', end:'2026-06-12', status:'approved' },
+    { name:'박도윤', dept:'영업팀',   type:'연차',      start:'2026-06-16', end:'2026-06-17', status:'approved' },
+    { name:'김민준', dept:'개발팀',   type:'반차(오전)', start:'2026-06-03', end:'2026-06-03', status:'approved' },
+  ];
+
+  function evClass(type) {
+    if (type === '연차') return 'ev-annual';
+    if (type.startsWith('반차')) return 'ev-half';
+    if (type === '병가') return 'ev-sick';
+    return 'ev-special';
+  }
+
+  function evColor(type) {
+    if (type === '연차') return 'var(--chart-1)';
+    if (type.startsWith('반차')) return 'var(--chart-2)';
+    if (type === '병가') return 'var(--chart-3)';
+    return 'var(--chart-4)';
+  }
+
+  function daysInRange(s, e) {
+    const days = [];
+    const start = new Date(s + 'T00:00:00');
+    const end   = new Date(e + 'T00:00:00');
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      days.push(d.toISOString().slice(0, 10));
+    }
+    return days;
+  }
+
+  function buildMap() {
+    const map = {};
+    EVENTS.forEach(ev => {
+      daysInRange(ev.start, ev.end).forEach(d => {
+        (map[d] = map[d] || []).push(ev);
+      });
+    });
+    return map;
+  }
+
+  const eventMap = buildMap();
+
+  const TODAY = '2026-05-15';
+  let curYear = 2026, curMonth = 5;
+  let selectedDate = null;
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+
+  function renderCalendar() {
+    const MONTH_NAMES = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+    document.getElementById('calTitle').textContent = `${curYear}년 ${MONTH_NAMES[curMonth - 1]}`;
+
+    const firstDow = new Date(curYear, curMonth - 1, 1).getDay();
+    const totalDays = new Date(curYear, curMonth, 0).getDate();
+
+    const DOWS = ['일','월','화','수','목','금','토'];
+    let html = DOWS.map((d, i) => `<div class="cal-dow ${i===0?'sun':i===6?'sat':''}">${d}</div>`).join('');
+
+    for (let i = 0; i < firstDow; i++) html += `<div class="cal-day empty"></div>`;
+
+    for (let d = 1; d <= totalDays; d++) {
+      const ds = `${curYear}-${pad2(curMonth)}-${pad2(d)}`;
+      const dow = (firstDow + d - 1) % 7;
+      const isToday    = ds === TODAY;
+      const isSelected = ds === selectedDate;
+      const isSun = dow === 0;
+      const isSat = dow === 6;
+
+      const evs = eventMap[ds] || [];
+      const show = evs.slice(0, 3);
+      const more = evs.length - show.length;
+
+      const evHtml = show.map(ev => {
+        const cls = evClass(ev.type) + (ev.status === 'pending' ? ' ev-pending' : '');
+        return `<div class="cal-event ${cls}">${ev.name}</div>`;
+      }).join('') + (more > 0 ? `<div class="cal-more">+${more}명</div>` : '');
+
+      const cls = ['cal-day',
+        isToday    ? 'today'    : '',
+        isSelected ? 'selected' : '',
+        isSun ? 'sun' : isSat ? 'sat' : '',
+      ].filter(Boolean).join(' ');
+
+      html += `<div class="${cls}" onclick="selectDay('${ds}')">
+        <div class="cal-day-num">${d}</div>
+        <div class="cal-events">${evHtml}</div>
+      </div>`;
+    }
+
+    const rem = (firstDow + totalDays) % 7;
+    if (rem !== 0) for (let i = 0; i < 7 - rem; i++) html += `<div class="cal-day empty"></div>`;
+
+    document.getElementById('calGrid').innerHTML = html;
+  }
+
+  function selectDay(ds) {
+    selectedDate = ds;
+    renderCalendar();
+
+    const [y, m, d] = ds.split('-').map(Number);
+    const label = new Intl.DateTimeFormat('ko-KR', { month:'long', day:'numeric', weekday:'short' }).format(new Date(y, m - 1, d));
+    const evs = eventMap[ds] || [];
+
+    document.getElementById('detailDate').innerHTML =
+      label + (evs.length ? `<span class="cal-detail-count">${evs.length}명</span>` : '');
+
+    const content = document.getElementById('detailContent');
+    if (!evs.length) {
+      content.innerHTML = `<div class="cal-detail-empty">이 날은<br>휴가 신청이 없습니다</div>`;
+      return;
+    }
+
+    const statusLabel = { approved:'승인', pending:'대기', rejected:'반려' };
+    const statusBadge = { approved:'badge-success', pending:'badge-warning', rejected:'badge-danger' };
+
+    content.innerHTML = evs.map(ev => `
+      <div class="cal-detail-item">
+        <div class="cal-detail-dot" style="background:${evColor(ev.type)};margin-top:5px;"></div>
+        <div style="flex:1;min-width:0;">
+          <div class="cal-detail-name">${ev.name} <span style="font-weight:400;color:var(--color-text-tertiary);font-size:var(--text-xs);">${ev.dept}</span></div>
+          <div class="cal-detail-meta">
+            <span>${ev.type}</span>
+            <span class="badge ${statusBadge[ev.status]}" style="font-size:10px;padding:1px 6px;">${statusLabel[ev.status]}</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('prevMonth').addEventListener('click', () => {
+    if (--curMonth < 1) { curMonth = 12; curYear--; }
+    renderCalendar();
+    if (selectedDate) renderCalendar(); // rerender to keep selection visible
+  });
+
+  document.getElementById('nextMonth').addEventListener('click', () => {
+    if (++curMonth > 12) { curMonth = 1; curYear++; }
+    renderCalendar();
+  });
+
+  document.getElementById('todayBtn').addEventListener('click', () => {
+    curYear = 2026; curMonth = 5;
+    selectDay(TODAY);
+  });
+
+  renderCalendar();
+  selectDay(TODAY);
+</script>
+</body>
+</html>
