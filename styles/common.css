@@ -1109,7 +1109,6 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   align-items: stretch;
   justify-content: center;
   min-width: 0;
-  overflow: hidden;
 }
 
 .topnav-item {
@@ -1158,7 +1157,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   font-family: inherit;
 }
 .topnav-group-trigger:hover { color: var(--color-text-primary); }
-.topnav-group.open .topnav-group-trigger { color: var(--color-text-primary); }
+.topnav-group.open .topnav-group-trigger { color: var(--color-primary); }
 .topnav-group-trigger.active             { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 
 .topnav-group-chevron     { display: flex; align-items: center; flex-shrink: 0; transition: transform 0.15s; }
