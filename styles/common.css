@@ -1075,7 +1075,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-layout="top"] .sidebar      { display: none; }
 [data-layout="top"] .main-content { margin-left: 0; }
 [data-layout="top"] .tab-bar      { left: 0; }
-[data-layout="top"] .topbar                { height: 38px; padding: 0 var(--space-6); }
+[data-layout="top"] .topbar                { height: 38px; padding: 0 var(--space-6); background: var(--color-bg-subtle); }
 [data-layout="top"] .breadcrumb-current    { font-size: var(--text-sm); font-weight: var(--weight-medium); }
 [data-layout="top"] .topbar-title          { font-size: var(--text-sm); font-weight: var(--weight-medium); }
 [data-layout="top"] .breadcrumb-home svg   { width: 13px; height: 13px; }
