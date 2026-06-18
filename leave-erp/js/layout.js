@@ -222,7 +222,6 @@ function _csWrapSelect(sel) {
     var rect = trigger.getBoundingClientRect();
     var dropH = dropdown.scrollHeight || 200;
     dropdown.style.left = rect.left + 'px';
-    dropdown.style.minWidth = Math.max(rect.width, 80) + 'px';
     if (window.innerHeight - rect.bottom - 6 < dropH && rect.top > dropH + 6) {
       dropdown.style.top = (rect.top - dropH - 6) + 'px';
     } else {
@@ -289,7 +288,7 @@ function initCondWraps() {
 }
 
 function initCustomSelects() {
-  document.querySelectorAll('select.filter-select').forEach(_csWrapSelect);
+  document.querySelectorAll('select.filter-select, select.form-select').forEach(_csWrapSelect);
 
   if (!window._csClickBound) {
     window._csClickBound = true;
@@ -300,6 +299,10 @@ function initCustomSelects() {
           d._csTrigger.classList.remove('open');
           d._csTrigger.setAttribute('aria-expanded', 'false');
         }
+      });
+      document.querySelectorAll('.fp-cal-dropdown.open').forEach(function (d) {
+        if (d._close) d._close();
+        else d.classList.remove('open');
       });
     });
   }
