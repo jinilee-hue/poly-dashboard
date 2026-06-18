@@ -346,7 +346,7 @@ a { text-decoration: none; }
 }
 
 .card-title { font-size: var(--text-lg); font-weight: var(--weight-medium); color: var(--color-text-primary); }
-.card-title::before {
+[data-layout="top"] .card-title::before {
   content: '';
   display: block;
   width: 16px;
@@ -358,8 +358,8 @@ a { text-decoration: none; }
 .card-body { padding: 12px var(--space-6) var(--space-6); }
 .card-body.no-pad { padding: 0; }
 .card-body.flush-x { padding-left: 0; padding-right: 0; }
-.card.flush-x > .card-header,
-.card.flush-x > .card-body { padding-left: 0; padding-right: 0; }
+[data-layout="top"] .card.flush-x > .card-header,
+[data-layout="top"] .card.flush-x > .card-body { padding-left: 0; padding-right: 0; }
 
 /* ─── CHART GRIDS ─────────────────────────────── */
 .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); margin-bottom: var(--space-8); }
