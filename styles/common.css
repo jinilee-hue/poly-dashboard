@@ -162,6 +162,7 @@ a { text-decoration: none; }
 .breadcrumb-home:hover { color: var(--color-text-secondary); }
 .breadcrumb-home svg { width: 16px; height: 16px; }
 .breadcrumb-sep { font-size: var(--text-sm); color: var(--color-text-tertiary); }
+.breadcrumb-ancestor { font-size: var(--text-sm); color: var(--color-text-secondary); }
 .breadcrumb-current { font-size: var(--text-lg); font-weight: var(--weight-semibold); color: var(--color-text-primary); }
 .topbar-date { font-size: var(--text-sm); color: var(--color-text-tertiary); }
 .topbar-actions { display: flex; align-items: center; gap: var(--space-3); }
@@ -1080,6 +1081,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-layout="top"] .topnav-group-trigger  { margin-bottom: 0; }
 [data-layout="top"] .topbar                { height: 38px; padding: 0 var(--space-6); background: var(--color-bg-muted); border-bottom: none; }
 [data-layout="top"] .breadcrumb-current    { font-size: var(--text-xs); font-weight: var(--weight-medium); }
+[data-layout="top"] .breadcrumb-ancestor   { font-size: var(--text-xs); }
 [data-layout="top"] .topbar-title          { font-size: var(--text-xs); font-weight: var(--weight-medium); }
 [data-layout="top"] .breadcrumb-home svg   { width: 13px; height: 13px; }
 [data-layout="top"] .breadcrumb-sep        { font-size: var(--text-xs); }

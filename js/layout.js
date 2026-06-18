@@ -220,6 +220,20 @@ function initLayout(currentHref) {
     const currentItem = NAV_ITEMS.find(item => item.href === currentHref);
     const label = currentItem ? currentItem.label : titleEl.textContent.trim();
     const isHome = currentHref === 'index.html';
+
+    /* top 모드: TOP_NAV_GROUPS에서 부모 그룹 탐색 */
+    var parentGroup = null;
+    if (navMode === 'top') {
+      TOP_NAV_GROUPS.forEach(function (g) {
+        if (g.children && g.children.some(function (c) { return c.href === currentHref; })) {
+          parentGroup = g;
+        }
+      });
+    }
+    var ancestorHtml = parentGroup
+      ? '<span class="breadcrumb-ancestor">' + parentGroup.label + '</span><span class="breadcrumb-sep">›</span>'
+      : '';
+
     titleEl.outerHTML = isHome
       ? `<span class="breadcrumb-current">${label}</span>`
       : `<nav class="breadcrumb" aria-label="breadcrumb">
@@ -227,6 +241,7 @@ function initLayout(currentHref) {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           </a>
           <span class="breadcrumb-sep">›</span>
+          ${ancestorHtml}
           <span class="breadcrumb-current">${label}</span>
         </nav>`;
   }
