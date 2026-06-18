@@ -159,14 +159,18 @@ a { text-decoration: none; }
 .nav-item-child {
   margin: 0;
   border-radius: 0;
-  padding-left: calc(var(--space-4) + 16px + var(--space-3));
+  padding-left: var(--space-4);
 }
 .nav-item-child::before {
   content: '›';
-  margin-right: var(--space-2);
+  display: inline-block;
+  width: 16px;
+  text-align: center;
+  margin-right: var(--space-3);
   font-size: var(--text-base);
   color: var(--color-text-tertiary);
   line-height: 1;
+  flex-shrink: 0;
 }
 .nav-item-child.active::before { color: var(--color-sidebar-active); }
 .nav-item-child:hover { background: var(--color-primary-a15); color: var(--color-sidebar-text-hover); }
