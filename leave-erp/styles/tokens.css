@@ -2,10 +2,14 @@
 
 :root {
   /* ── Poly Brand Blue ──────────────────────────── */
-  --color-primary:        #0066FF;
-  --color-primary-light:  #E8F0FF;
-  --color-primary-dark:   #0052CC;
-  --color-primary-deeper: #003D99;
+  --color-primary:        #0066FF;   /* Poly Blue */
+  --color-primary-light:  #E8F0FF;   /* 배지·아이콘 배경 */
+  --color-primary-dark:   #0052CC;   /* 호버·강조 */
+  --color-primary-deeper: #003D99;   /* 가장 진한 블루 */
+
+  /* ── CANB Brand Magenta (멀티 브랜드 뷰 전용) ── */
+  --color-canb-primary:   #BC216D;
+  --color-canb-light:     #FAEAF3;
 
   /* ── Neutral ────────────────────────────────── */
   --color-bg:             #FFFFFF;
@@ -21,8 +25,8 @@
   --color-text-disabled:  #D1D5DB;
 
   /* ── Semantic ────────────────────────────────── */
-  --color-success:        #0066FF;
-  --color-success-light:  #E8F0FF;
+  --color-success:        #0066FF;   /* Brand Blue — 완료·활성·정상 */
+  --color-success-light:  #E8F0FF;   /* 블루 틴트 배경 */
   --color-warning:        #D97706;
   --color-warning-light:  #FFFBEB;
   --color-danger:         #DC2626;
@@ -39,7 +43,7 @@
   --color-sidebar-border:     #E2E5EA;
   --color-sidebar-section:    #9CA3AF;
 
-  /* ── Brand alpha ─────────────────────────────── */
+  /* ── Brand alpha — 버튼 hover·focus 색상 (JS BRAND_TOKENS에서 오버라이드) ─ */
   --color-primary-a08: rgba(0,102,255,0.08);
   --color-primary-a10: rgba(0,102,255,0.10);
   --color-primary-a15: rgba(0,102,255,0.15);
@@ -47,7 +51,7 @@
   --color-primary-a30: rgba(0,102,255,0.30);
   --color-primary-a50: rgba(0,102,255,0.50);
 
-  /* ── Chart — #0066FF(rgb 0,102,255) 투명도 단계 ─ */
+  /* ── Chart — 라이트 모드: #0066FF(rgb 0,102,255) 투명도 단계 ─ */
   --chart-1: rgba(0,102,255,0.85);
   --chart-2: rgba(0,102,255,0.60);
   --chart-3: rgba(0,102,255,0.38);
@@ -71,6 +75,9 @@
   --weight-normal:   400;
   --weight-medium:   500;
   --weight-semibold: 600;
+
+  /* ── Component Heights ──────────────────────── */
+  --input-height: 40px;
 
   /* ── Spacing ─────────────────────────────────── */
   --space-1:  4px;
@@ -98,33 +105,43 @@
 
   --border-default: 1px solid var(--color-border);
   --border-strong:  1px solid var(--color-border-strong);
-
-  /* ── Component Heights ──────────────────────── */
-  --input-height: 40px;
 }
 
 /* ── Dark Mode ───────────────────────────────── */
 [data-theme="dark"] {
+  /* Backgrounds */
   --color-bg:             #111111;
   --color-bg-subtle:      #1A1A1A;
   --color-bg-muted:       #252525;
 
+  /* Borders */
   --color-border:         rgba(255,255,255,0.10);
   --color-border-strong:  rgba(255,255,255,0.18);
 
+  /* Text */
   --color-text-primary:   #F5F5F5;
   --color-text-secondary: #9CA3AF;
   --color-text-tertiary:  #6B7280;
   --color-text-disabled:  #374151;
 
+  /* Primary light (아이콘·배지 배경) */
   --color-primary-light:  rgba(0,102,255,0.22);
 
+  /* Brand alpha */
+  --color-primary-a08: rgba(0,102,255,0.08);
+  --color-primary-a10: rgba(0,102,255,0.10);
+  --color-primary-a15: rgba(0,102,255,0.15);
+  --color-primary-a25: rgba(0,102,255,0.25);
+  --color-primary-a30: rgba(0,102,255,0.30);
+  --color-primary-a50: rgba(0,102,255,0.50);
+
+  /* Semantic lights */
   --color-success-light:  rgba(0,102,255,0.22);
   --color-warning-light:  rgba(217,119,6,0.18);
   --color-danger-light:   rgba(220,38,38,0.18);
   --color-info-light:     rgba(0,102,255,0.20);
 
-  /* ── Chart — 다크 모드: 브랜드 원색 동일 적용 ── */
+  /* ── Chart — 다크 모드: 브랜드 원색(rgb 0,102,255) 투명도 단계 ──────── */
   --chart-1: rgba(0,102,255,0.85);
   --chart-2: rgba(0,102,255,0.60);
   --chart-3: rgba(0,102,255,0.38);
@@ -140,6 +157,7 @@
   --color-sidebar-border:     rgba(255,255,255,0.08);
   --color-sidebar-section:    rgba(255,255,255,0.32);
 
+  /* Shadows */
   --shadow-sm:  0 1px 3px rgba(0,0,0,0.35);
   --shadow-md:  0 4px 8px -1px rgba(0,0,0,0.40);
   --shadow-lg:  0 10px 20px -3px rgba(0,0,0,0.50);
