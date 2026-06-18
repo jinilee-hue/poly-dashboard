@@ -14,6 +14,27 @@ const NAV_ITEMS = [
   { icon: 'refresh',     label: '모달 데모', href: 'modal-demo.html' },
 ];
 
+/* 상단 네비 전용 그룹 구조 (2-depth 드롭다운) */
+const TOP_NAV_GROUPS = [
+  { label: '대시보드',  icon: 'home',        href: 'index.html' },
+  { label: '학생/강사', icon: 'users',       children: [
+    { label: '학생 관리', href: 'students.html' },
+    { label: '강사 관리', href: 'teachers.html' },
+  ]},
+  { label: '수강/출결', icon: 'book-open',   children: [
+    { label: '수강 관리', href: 'courses.html' },
+    { label: '출결 관리', href: 'attendance.html' },
+    { label: '성적 관리', href: 'grades.html' },
+  ]},
+  { label: '수납 관리', icon: 'credit-card', href: 'payments.html' },
+  { label: '소통',      icon: 'bell',        children: [
+    { label: '공지사항',  href: 'notices.html' },
+    { label: '상담 관리', href: 'counseling.html' },
+  ]},
+  { label: '설정',      icon: 'settings',    href: 'settings.html' },
+  { label: '모달 데모', icon: 'refresh',     href: 'modal-demo.html' },
+];
+
 const ICONS = {
   home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
   users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
@@ -87,39 +108,103 @@ function initLayout(currentHref) {
     }
   }
 
-  /* ── 상단 네비 (top 모드) ── */
+  /* ── 상단 네비바 (top 모드) — topbar 위에 삽입 ── */
   if (navMode === 'top') {
-    /* topbar-left 에 브랜드 삽입 */
-    var topbarLeft = document.querySelector('.topbar-left');
-    if (topbarLeft) {
-      var brandEl = document.createElement('div');
-      brandEl.className = 'topbar-brand';
-      brandEl.innerHTML = '<span class="sidebar-brand">EduPoly</span><span class="sidebar-tagline">캠퍼스 관리</span>';
-      topbarLeft.insertBefore(brandEl, topbarLeft.firstChild);
-    }
+    var _chevronSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
 
-    /* topbar 아래에 topnav 삽입 */
-    var topbar = document.querySelector('.topbar');
-    if (topbar) {
-      var topnav = document.createElement('nav');
-      topnav.className = 'topnav';
-      NAV_ITEMS.forEach(function (item) {
+    /* 네비바 컨테이너 */
+    var topnavBar = document.createElement('header');
+    topnavBar.className = 'topnav-bar';
+
+    /* 브랜드 */
+    var topBrand = document.createElement('div');
+    topBrand.className = 'topnav-bar-brand';
+    topBrand.innerHTML = '<span class="sidebar-brand">EduPoly</span><span class="sidebar-tagline">캠퍼스 관리</span>';
+    topnavBar.appendChild(topBrand);
+
+    /* 네비 아이템 */
+    var topnav = document.createElement('nav');
+    topnav.className = 'topnav';
+
+    TOP_NAV_GROUPS.forEach(function (group) {
+      if (group.children && group.children.length) {
+        /* 드롭다운 그룹 */
+        var isActiveGroup = group.children.some(function (c) { return c.href === currentHref; });
+        var groupEl = document.createElement('div');
+        groupEl.className = 'topnav-group';
+
+        var trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'topnav-group-trigger' + (isActiveGroup ? ' active' : '');
+
+        var tIcon = document.createElement('span');
+        tIcon.className = 'topnav-item-icon';
+        tIcon.innerHTML = ICONS[group.icon] || '';
+
+        var tLabel = document.createElement('span');
+        tLabel.textContent = group.label;
+
+        var tChevron = document.createElement('span');
+        tChevron.className = 'topnav-group-chevron';
+        tChevron.innerHTML = _chevronSvg;
+
+        trigger.appendChild(tIcon);
+        trigger.appendChild(tLabel);
+        trigger.appendChild(tChevron);
+
+        var dropdown = document.createElement('div');
+        dropdown.className = 'topnav-dropdown';
+        group.children.forEach(function (child) {
+          var a = document.createElement('a');
+          a.href = child.href;
+          a.className = 'topnav-dropdown-item' + (currentHref === child.href ? ' active' : '');
+          a.textContent = child.label;
+          dropdown.appendChild(a);
+        });
+
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var wasOpen = groupEl.classList.contains('open');
+          topnav.querySelectorAll('.topnav-group.open').forEach(function (g) { g.classList.remove('open'); });
+          if (!wasOpen) groupEl.classList.add('open');
+        });
+
+        groupEl.appendChild(trigger);
+        groupEl.appendChild(dropdown);
+        topnav.appendChild(groupEl);
+      } else {
+        /* 단일 링크 */
         var a = document.createElement('a');
-        a.href = item.href;
-        a.className = 'topnav-item' + (currentHref === item.href ? ' active' : '');
+        a.href = group.href;
+        a.className = 'topnav-item' + (currentHref === group.href ? ' active' : '');
 
-        var iconSpan = document.createElement('span');
-        iconSpan.className = 'topnav-item-icon';
-        iconSpan.innerHTML = ICONS[item.icon] || '';
+        var iSpan = document.createElement('span');
+        iSpan.className = 'topnav-item-icon';
+        iSpan.innerHTML = ICONS[group.icon] || '';
 
-        var labelSpan = document.createElement('span');
-        labelSpan.textContent = item.label;
+        var lSpan = document.createElement('span');
+        lSpan.textContent = group.label;
 
-        a.appendChild(iconSpan);
-        a.appendChild(labelSpan);
+        a.appendChild(iSpan);
+        a.appendChild(lSpan);
         topnav.appendChild(a);
-      });
-      topbar.insertAdjacentElement('afterend', topnav);
+      }
+    });
+
+    topnavBar.appendChild(topnav);
+
+    /* 액션 버튼 자리 (이후 액션 블록이 채움) */
+    var topBarActionsEl = document.createElement('div');
+    topBarActionsEl.className = 'topnav-bar-actions';
+    topnavBar.appendChild(topBarActionsEl);
+
+    /* main-content 안 topbar 바로 앞에 삽입 (메뉴가 타이틀보다 위) */
+    var mainContent = document.querySelector('.main-content');
+    var topbar = document.querySelector('.topbar');
+    if (mainContent && topbar) {
+      mainContent.insertBefore(topnavBar, topbar);
+    } else if (mainContent) {
+      mainContent.insertBefore(topnavBar, mainContent.firstChild);
     }
   }
 
@@ -140,39 +225,48 @@ function initLayout(currentHref) {
         </nav>`;
   }
 
-  /* ── topbar 액션 버튼 ── */
-  const actions = document.querySelector('.topbar-actions');
-  if (actions) {
-    /* 테마 토글 */
-    const themeBtn = document.createElement('button');
-    themeBtn.className = 'icon-btn';
-    themeBtn.id = 'theme-toggle';
-    themeBtn.addEventListener('click', function () {
-      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const next = dark ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('epTheme', next);
-      _syncThemeBtn();
-      if (typeof setChartDefaults === 'function') setChartDefaults();
-      window.dispatchEvent(new CustomEvent('themechange', { detail: { dark: next === 'dark' } }));
-    });
-    actions.insertBefore(themeBtn, actions.firstChild);
+  /* ── 액션 버튼 (테마 토글 + 레이아웃 토글) ── */
+  var _themeBtn = document.createElement('button');
+  _themeBtn.className = 'icon-btn';
+  _themeBtn.id = 'theme-toggle';
+  _themeBtn.addEventListener('click', function () {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('epTheme', next);
     _syncThemeBtn();
+    if (typeof setChartDefaults === 'function') setChartDefaults();
+    window.dispatchEvent(new CustomEvent('themechange', { detail: { dark: next === 'dark' } }));
+  });
 
-    /* 레이아웃 토글 */
-    var layoutBtn = document.createElement('button');
-    layoutBtn.className = 'icon-btn';
-    layoutBtn.id = 'layout-toggle';
-    layoutBtn.innerHTML = navMode === 'top' ? ICONS['layout-side'] : ICONS['layout-top'];
-    layoutBtn.title = navMode === 'top' ? '사이드바 메뉴로 전환' : '상단 메뉴로 전환';
-    layoutBtn.setAttribute('aria-label', layoutBtn.title);
-    layoutBtn.addEventListener('click', function () {
-      var cur = localStorage.getItem('epNav') || 'side';
-      localStorage.setItem('epNav', cur === 'top' ? 'side' : 'top');
-      location.reload();
-    });
-    actions.insertBefore(layoutBtn, actions.firstChild);
+  var _layoutBtn = document.createElement('button');
+  _layoutBtn.className = 'icon-btn';
+  _layoutBtn.id = 'layout-toggle';
+  _layoutBtn.innerHTML = navMode === 'top' ? ICONS['layout-side'] : ICONS['layout-top'];
+  _layoutBtn.title = navMode === 'top' ? '사이드바 메뉴로 전환' : '상단 메뉴로 전환';
+  _layoutBtn.setAttribute('aria-label', _layoutBtn.title);
+  _layoutBtn.addEventListener('click', function () {
+    var cur = localStorage.getItem('epNav') || 'side';
+    localStorage.setItem('epNav', cur === 'top' ? 'side' : 'top');
+    location.reload();
+  });
+
+  if (navMode === 'top') {
+    /* top 모드: topnav-bar-actions에 삽입 */
+    var _topBarActions = document.querySelector('.topnav-bar-actions');
+    if (_topBarActions) {
+      _topBarActions.appendChild(_layoutBtn);
+      _topBarActions.appendChild(_themeBtn);
+    }
+  } else {
+    /* side 모드: topbar-actions에 삽입 */
+    var _sideActions = document.querySelector('.topbar-actions');
+    if (_sideActions) {
+      _sideActions.insertBefore(_themeBtn, _sideActions.firstChild);
+      _sideActions.insertBefore(_layoutBtn, _sideActions.firstChild);
+    }
   }
+  _syncThemeBtn();
 
   _initTabBar(currentHref);
 }
@@ -356,6 +450,9 @@ function initCustomSelects() {
       document.querySelectorAll('.fp-cal-dropdown.open').forEach(function (d) {
         if (d._close) d._close();
         else d.classList.remove('open');
+      });
+      document.querySelectorAll('.topnav-group.open').forEach(function (g) {
+        g.classList.remove('open');
       });
     });
   }

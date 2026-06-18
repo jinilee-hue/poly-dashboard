@@ -1075,30 +1075,36 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-layout="top"] .sidebar      { display: none; }
 [data-layout="top"] .main-content { margin-left: 0; }
 [data-layout="top"] .tab-bar      { left: 0; }
+[data-layout="top"] .topbar       { height: 44px; }
 
-.topbar-brand {
-  display: none;
-  align-items: baseline;
-  gap: var(--space-2);
-  padding-right: var(--space-5);
-  margin-right: var(--space-2);
-  border-right: var(--border-default);
-  flex-shrink: 0;
-}
-[data-layout="top"] .topbar-brand { display: flex; }
-
-.topnav {
-  height: 44px;
+/* ── 최상단 네비바 (topnav-bar) ── */
+.topnav-bar {
+  height: 56px;
   background: var(--color-bg);
   border-bottom: var(--border-default);
   display: flex;
   align-items: stretch;
   flex-shrink: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  padding: 0 var(--space-2);
+  padding: 0 var(--space-6);
 }
-.topnav::-webkit-scrollbar { display: none; }
+
+.topnav-bar-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-right: var(--space-5);
+  border-right: var(--border-default);
+  flex-shrink: 0;
+  margin-right: var(--space-2);
+}
+
+.topnav {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+  overflow: hidden;
+}
 
 .topnav-item {
   display: flex;
@@ -1118,5 +1124,65 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 .topnav-item:hover  { background: var(--color-bg-muted); color: var(--color-text-primary); }
 .topnav-item.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 
-.topnav-item-icon              { display: flex; align-items: center; }
-.topnav-item-icon svg          { width: 14px; height: 14px; }
+.topnav-item-icon     { display: flex; align-items: center; }
+.topnav-item-icon svg { width: 14px; height: 14px; }
+
+/* ── 2-depth 드롭다운 그룹 ── */
+.topnav-group { position: relative; display: flex; align-items: stretch; }
+
+.topnav-group-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+  margin-bottom: -1px;
+  font-family: inherit;
+}
+.topnav-group-trigger:hover { background: var(--color-bg-muted); color: var(--color-text-primary); }
+.topnav-group.open .topnav-group-trigger,
+.topnav-group-trigger.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+.topnav-group-chevron     { display: flex; align-items: center; flex-shrink: 0; transition: transform 0.15s; }
+.topnav-group-chevron svg { width: 12px; height: 12px; }
+.topnav-group.open .topnav-group-chevron { transform: rotate(180deg); }
+
+.topnav-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 160px;
+  background: var(--color-bg);
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2) 0;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.topnav-group.open .topnav-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+
+.topnav-dropdown-item {
+  display: block;
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+.topnav-dropdown-item:hover  { background: var(--color-bg-muted); color: var(--color-text-primary); }
+.topnav-dropdown-item.active { color: var(--color-primary); background: var(--color-primary-a08); font-weight: var(--weight-medium); }
+
+.topnav-bar-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; flex-shrink: 0; }
