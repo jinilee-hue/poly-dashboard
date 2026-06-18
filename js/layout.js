@@ -114,12 +114,11 @@ function initLayout(currentHref) {
           '<div><span class="user-name">이진희</span><span class="user-role">관리자</span></div>' +
         '</div></div>';
 
-      /* 그룹 트리거 클릭 → 아코디언 토글 */
+      /* 그룹 트리거 클릭 → 첫 번째 자식 페이지로 이동 */
       sideEl.querySelectorAll('.nav-group-trigger').forEach(function (trigger) {
         trigger.addEventListener('click', function () {
-          var group = this.closest('.nav-group');
-          var isOpen = group.classList.toggle('open');
-          this.classList.toggle('open', isOpen);
+          var firstChild = this.closest('.nav-group').querySelector('.nav-item-child');
+          if (firstChild && firstChild.href) window.location.href = firstChild.href;
         });
       });
     }
