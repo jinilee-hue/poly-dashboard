@@ -349,7 +349,7 @@ a { text-decoration: none; }
 .card-title::before {
   content: '';
   display: block;
-  width: 24px;
+  width: 18px;
   height: 2px;
   background: var(--color-primary);
   margin-bottom: 6px;
