@@ -110,6 +110,44 @@
         </div>
       </div>
 
+      <!-- 하단 탭바 데모 -->
+      <div class="kpi-card" style="display:flex;flex-direction:column;gap:16px;">
+        <div class="kpi-card-header">
+          <span class="kpi-label">하단 탭바</span>
+          <div class="kpi-icon blue" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="22" height="18" rx="2"/><line x1="1" y1="9" x2="23" y2="9"/></svg>
+          </div>
+        </div>
+        <p style="font-size:var(--text-sm);color:var(--color-text-secondary);">방문 페이지가 탭으로 쌓입니다. 탭이 많아지면 가로 스크롤이 생깁니다.</p>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary btn-sm" onclick="
+            var base = [
+              {href:'index.html',label:'대시보드',icon:'home'},
+              {href:'students.html',label:'학생 관리',icon:'users'},
+              {href:'courses.html',label:'수강 관리',icon:'book-open'},
+              {href:'attendance.html',label:'출결 관리',icon:'cal-check'},
+              {href:'grades.html',label:'성적 관리',icon:'bar-chart'},
+              {href:'payments.html',label:'수납 관리',icon:'credit-card'},
+              {href:'teachers.html',label:'강사 관리',icon:'user-check'},
+              {href:'notices.html',label:'공지사항',icon:'bell'},
+              {href:'counseling.html',label:'상담 관리',icon:'message'},
+              {href:'settings.html',label:'설정',icon:'settings'},
+              {href:'modal-demo.html',label:'모달 데모',icon:'refresh'}
+            ];
+            var existing = [];
+            try { existing = JSON.parse(localStorage.getItem('epTabs')) || []; } catch(e) {}
+            var n = Math.floor(existing.length / base.length) + 1;
+            var added = base.map(function(t){ return {href:t.href, label:t.label+(n>1?' '+n:''), icon:t.icon}; });
+            localStorage.setItem('epTabs', JSON.stringify(existing.concat(added)));
+            location.reload();
+          ">탭 추가 (+11)</button>
+          <button class="btn btn-secondary btn-sm" onclick="
+            localStorage.removeItem('epTabs');
+            location.reload();
+          ">탭 초기화</button>
+        </div>
+      </div>
+
       <!-- 커스텀 셀렉트 -->
       <div class="kpi-card" style="display:flex;flex-direction:column;gap:16px;">
         <div class="kpi-card-header">

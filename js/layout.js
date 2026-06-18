@@ -606,7 +606,7 @@ function initCondWraps() {
 
 /* ─── BOTTOM TAB BAR ─────────────────────────── */
 var _EP_TABS_KEY = 'epTabs';
-var _EP_TABS_MAX = 10;
+var _EP_TABS_MAX = 50;
 
 function _getTabStore() {
   try { return JSON.parse(localStorage.getItem(_EP_TABS_KEY)) || []; } catch (e) { return []; }
@@ -627,6 +627,23 @@ function _initTabBar(currentHref) {
 
   var bar = document.createElement('div');
   bar.className = 'tab-bar';
+
+  /* 좌우 네비게이션 버튼 */
+  var btnLeft = document.createElement('button');
+  btnLeft.type = 'button';
+  btnLeft.className = 'tab-bar-nav tab-bar-nav-left';
+  btnLeft.setAttribute('aria-label', '이전 탭');
+  btnLeft.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
+
+  var btnRight = document.createElement('button');
+  btnRight.type = 'button';
+  btnRight.className = 'tab-bar-nav tab-bar-nav-right';
+  btnRight.setAttribute('aria-label', '다음 탭');
+  btnRight.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
+
+  /* 탭 목록 스크롤 영역 */
+  var inner = document.createElement('div');
+  inner.className = 'tab-bar-inner';
 
   tabs.forEach(function (tab, idx) {
     var item = document.createElement('a');
@@ -660,8 +677,9 @@ function _initTabBar(currentHref) {
             : 'index.html';
           window.location.href = dest;
         } else {
-          var el = bar.querySelector('[data-tab-href="' + tabHref + '"]');
+          var el = inner.querySelector('[data-tab-href="' + tabHref + '"]');
           if (el) el.parentNode.removeChild(el);
+          _syncNavBtns();
         }
       });
     })(tab.href, idx);
@@ -669,13 +687,42 @@ function _initTabBar(currentHref) {
     item.appendChild(iconSpan);
     item.appendChild(labelSpan);
     item.appendChild(closeBtn);
-    bar.appendChild(item);
+    inner.appendChild(item);
   });
 
+  bar.appendChild(btnLeft);
+  bar.appendChild(inner);
+  bar.appendChild(btnRight);
   document.body.appendChild(bar);
 
-  var activeTab = bar.querySelector('.tab-item.active');
-  if (activeTab) setTimeout(function () { activeTab.scrollIntoView({ inline: 'nearest' }); }, 0);
+  /* 좌우 버튼 표시/비활성 동기화 */
+  var SCROLL_STEP = 160;
+  function _syncNavBtns() {
+    var overflow = inner.scrollWidth > inner.clientWidth + 1;
+    if (overflow) {
+      btnLeft.classList.add('visible');
+      btnRight.classList.add('visible');
+    } else {
+      btnLeft.classList.remove('visible');
+      btnRight.classList.remove('visible');
+    }
+    btnLeft.disabled  = inner.scrollLeft <= 0;
+    btnRight.disabled = inner.scrollLeft >= inner.scrollWidth - inner.clientWidth - 1;
+  }
+
+  btnLeft.addEventListener('click', function () {
+    inner.scrollBy({ left: -SCROLL_STEP, behavior: 'smooth' });
+  });
+  btnRight.addEventListener('click', function () {
+    inner.scrollBy({ left: SCROLL_STEP, behavior: 'smooth' });
+  });
+  inner.addEventListener('scroll', _syncNavBtns);
+
+  setTimeout(function () {
+    _syncNavBtns();
+    var activeTab = inner.querySelector('.tab-item.active');
+    if (activeTab) activeTab.scrollIntoView({ inline: 'nearest' });
+  }, 0);
 }
 
 /* OverlayScrollbars 초기화 */

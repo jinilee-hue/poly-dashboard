@@ -991,12 +991,37 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   border-top: var(--border-default);
   display: flex;
   align-items: stretch;
-  overflow-x: auto;
-  overflow-y: hidden;
   z-index: 90;
-  scrollbar-width: none;
 }
-.tab-bar::-webkit-scrollbar { display: none; }
+
+.tab-bar-inner {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.tab-bar-nav {
+  flex-shrink: 0;
+  width: 32px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+  user-select: none;
+}
+.tab-bar-nav.visible { display: flex; }
+.tab-bar-nav-left { border-right: var(--border-default); }
+.tab-bar-nav-right { border-left: var(--border-default); }
+.tab-bar-nav:hover { background: var(--color-bg-muted); color: var(--color-primary); }
+.tab-bar-nav:disabled { opacity: 0.3; cursor: default; }
+.tab-bar-nav:disabled:hover { background: var(--color-bg); color: var(--color-text-secondary); }
+.tab-bar-nav svg { width: 14px; height: 14px; }
 
 .tab-item {
   display: flex;
