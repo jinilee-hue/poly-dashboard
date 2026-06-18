@@ -78,33 +78,50 @@ function initLayout(currentHref) {
 
   /* ── 사이드바 (side 모드) ── */
   if (navMode === 'side') {
-    const el = document.getElementById('sidebar');
-    if (el) {
-      el.innerHTML = `
-        <div class="sidebar-logo">
-          <div>
-            <span class="sidebar-brand">EduPoly</span>
-            <span class="sidebar-tagline">캠퍼스 관리</span>
-          </div>
-        </div>
-        <nav class="sidebar-nav">
-          ${NAV_ITEMS.map(item => `
-            <a href="${item.href}" class="nav-item ${currentHref === item.href ? 'active' : ''}">
-              ${ICONS[item.icon] || ''}
-              <span>${item.label}</span>
-            </a>
-          `).join('')}
-        </nav>
-        <div class="sidebar-footer">
-          <div class="sidebar-user">
-            <div class="user-avatar">이진</div>
-            <div>
-              <span class="user-name">이진희</span>
-              <span class="user-role">관리자</span>
-            </div>
-          </div>
-        </div>
-      `;
+    var sideEl = document.getElementById('sidebar');
+    if (sideEl) {
+      var chevSvg = '<svg class="nav-group-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+
+      var navHtml = TOP_NAV_GROUPS.map(function (group) {
+        if (group.children && group.children.length) {
+          var isActiveGroup = group.children.some(function (c) { return c.href === currentHref; });
+          var childrenHtml = group.children.map(function (child) {
+            return '<a href="' + child.href + '" class="nav-item nav-item-child' + (child.href === currentHref ? ' active' : '') + '">' +
+              '<span>' + child.label + '</span></a>';
+          }).join('');
+          return '<div class="nav-group' + (isActiveGroup ? ' open' : '') + '">' +
+            '<button class="nav-group-trigger' + (isActiveGroup ? ' active' : '') + '" type="button">' +
+              (ICONS[group.icon] || '') +
+              '<span>' + group.label + '</span>' +
+              chevSvg +
+            '</button>' +
+            '<div class="nav-group-children">' + childrenHtml + '</div>' +
+          '</div>';
+        } else {
+          return '<a href="' + group.href + '" class="nav-item' + (group.href === currentHref ? ' active' : '') + '">' +
+            (ICONS[group.icon] || '') + '<span>' + group.label + '</span></a>';
+        }
+      }).join('');
+
+      sideEl.innerHTML =
+        '<div class="sidebar-logo"><div>' +
+          '<span class="sidebar-brand">EduPoly</span>' +
+          '<span class="sidebar-tagline">캠퍼스 관리</span>' +
+        '</div></div>' +
+        '<nav class="sidebar-nav">' + navHtml + '</nav>' +
+        '<div class="sidebar-footer"><div class="sidebar-user">' +
+          '<div class="user-avatar">이진</div>' +
+          '<div><span class="user-name">이진희</span><span class="user-role">관리자</span></div>' +
+        '</div></div>';
+
+      /* 그룹 트리거 클릭 → 아코디언 토글 */
+      sideEl.querySelectorAll('.nav-group-trigger').forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          var group = this.closest('.nav-group');
+          var isOpen = group.classList.toggle('open');
+          this.classList.toggle('open', isOpen);
+        });
+      });
     }
   }
 
