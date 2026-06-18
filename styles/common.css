@@ -1173,7 +1173,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   border: none;
   border-radius: 0;
   box-shadow: var(--shadow-lg);
-  padding: var(--space-2) 0;
+  padding: 0;
   z-index: 200;
   opacity: 0;
   pointer-events: none;
@@ -1184,7 +1184,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 
 .topnav-dropdown-item {
   display: block;
-  padding: var(--space-2) var(--space-5);
+  padding: var(--space-4) var(--space-5);
   font-size: var(--text-sm);
   color: #ffffff;
   text-decoration: none;
