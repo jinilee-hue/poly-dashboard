@@ -199,6 +199,14 @@ function initLayout(currentHref) {
     } else if (mainContent) {
       mainContent.insertBefore(topnavBar, mainContent.firstChild);
     }
+
+    /* 가장 넓은 1depth 아이템 기준으로 너비 통일 */
+    document.fonts.ready.then(function () {
+      var allItems = Array.from(topnav.querySelectorAll('.topnav-item, .topnav-group-trigger'));
+      var maxW = 0;
+      allItems.forEach(function (el) { maxW = Math.max(maxW, el.offsetWidth); });
+      if (maxW > 0) allItems.forEach(function (el) { el.style.width = maxW + 'px'; });
+    });
   }
 
   /* ── 브레드크럼 ── */

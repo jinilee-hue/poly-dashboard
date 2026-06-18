@@ -1114,6 +1114,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 .topnav-item {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--space-6);
   font-size: var(--text-base);
@@ -1145,7 +1146,6 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   justify-content: center;
   gap: var(--space-2);
   padding: 0 var(--space-6);
-  min-width: 120px;
   font-size: var(--text-base);
   font-weight: var(--weight-medium);
   color: var(--color-text-secondary);
