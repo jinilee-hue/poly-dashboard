@@ -76,6 +76,9 @@
   --weight-medium:   500;
   --weight-semibold: 600;
 
+  /* ── Component Heights ──────────────────────── */
+  --input-height: 40px;
+
   /* ── Spacing ─────────────────────────────────── */
   --space-1:  4px;
   --space-2:  8px;
