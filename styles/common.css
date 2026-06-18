@@ -166,7 +166,6 @@ a { text-decoration: none; }
   display: inline-block;
   width: 16px;
   text-align: center;
-  margin-right: var(--space-3);
   font-size: var(--text-base);
   color: var(--color-text-tertiary);
   line-height: 1;
