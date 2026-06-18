@@ -162,13 +162,6 @@ function initLayout(currentHref) {
           dropdown.appendChild(a);
         });
 
-        trigger.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var wasOpen = groupEl.classList.contains('open');
-          topnav.querySelectorAll('.topnav-group.open').forEach(function (g) { g.classList.remove('open'); });
-          if (!wasOpen) groupEl.classList.add('open');
-        });
-
         groupEl.appendChild(trigger);
         groupEl.appendChild(dropdown);
         topnav.appendChild(groupEl);
@@ -463,9 +456,6 @@ function initCustomSelects() {
       document.querySelectorAll('.fp-cal-dropdown.open').forEach(function (d) {
         if (d._close) d._close();
         else d.classList.remove('open');
-      });
-      document.querySelectorAll('.topnav-group.open').forEach(function (g) {
-        g.classList.remove('open');
       });
     });
   }

@@ -1157,12 +1157,10 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   font-family: inherit;
 }
 .topnav-group-trigger:hover { color: var(--color-text-primary); }
-.topnav-group.open .topnav-group-trigger,
+.topnav-group:hover .topnav-group-trigger,
 .topnav-group-trigger.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 
-.topnav-group-chevron     { display: flex; align-items: center; flex-shrink: 0; transition: transform 0.15s; }
-.topnav-group-chevron svg { width: 12px; height: 12px; }
-.topnav-group.open .topnav-group-chevron { transform: rotate(180deg); }
+.topnav-group-chevron { display: none; }
 
 .topnav-dropdown {
   position: absolute;
@@ -1180,7 +1178,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   transform: translateY(-6px);
   transition: opacity 0.15s, transform 0.15s;
 }
-.topnav-group.open .topnav-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
+.topnav-group:hover .topnav-dropdown { opacity: 1; pointer-events: all; transform: translateY(0); }
 
 .topnav-dropdown-item {
   display: block;
