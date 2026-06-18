@@ -200,22 +200,22 @@
           <div class="chart-container-sm" role="img" aria-label="오늘 출결 현황 차트">
             <canvas id="attendanceTodayChart"></canvas>
           </div>
-          <div style="margin-top: var(--space-5);">
-            <div class="stat-row">
-              <span class="stat-row-label">출석</span>
-              <span class="stat-row-value" style="color: var(--color-success);">1,102명</span>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3);margin-top:var(--space-5);">
+            <div style="border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-2);text-align:center;">
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-bottom:4px;">출석</div>
+              <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--color-primary);">1,102명</div>
             </div>
-            <div class="stat-row">
-              <span class="stat-row-label">결석</span>
-              <span class="stat-row-value" style="color: var(--color-text-secondary);">87명</span>
+            <div style="border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-2);text-align:center;">
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-bottom:4px;">결석</div>
+              <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--color-text-primary);">87명</div>
             </div>
-            <div class="stat-row">
-              <span class="stat-row-label">지각</span>
-              <span class="stat-row-value" style="color: var(--color-text-secondary);">34명</span>
+            <div style="border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-2);text-align:center;">
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-bottom:4px;">지각</div>
+              <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--color-text-primary);">34명</div>
             </div>
-            <div class="stat-row">
-              <span class="stat-row-label">조퇴</span>
-              <span class="stat-row-value" style="color: var(--color-text-secondary);">24명</span>
+            <div style="border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-2);text-align:center;">
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-bottom:4px;">조퇴</div>
+              <div style="font-size:var(--text-base);font-weight:var(--weight-semibold);color:var(--color-text-primary);">24명</div>
             </div>
           </div>
         </div>
