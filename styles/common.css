@@ -1207,7 +1207,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   transition: color 0.12s, background 0.12s;
   margin-bottom: -1px;
 }
-.topnav-item:hover  { color: var(--color-text-primary); }
+.topnav-item:hover  { color: var(--color-primary); }
 .topnav-item.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 
 .topnav-item-icon     { display: flex; align-items: center; }
@@ -1238,7 +1238,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   margin-bottom: 0;
   font-family: inherit;
 }
-.topnav-group-trigger:hover { color: var(--color-text-primary); }
+.topnav-group-trigger:hover { color: var(--color-primary); }
 .topnav-group:hover .topnav-group-trigger,
 .topnav-group-trigger.active { color: var(--color-primary); border-bottom-color: var(--color-primary); }
 
