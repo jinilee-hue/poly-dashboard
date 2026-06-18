@@ -173,6 +173,8 @@ a { text-decoration: none; }
 }
 .nav-item-child:hover::before  { color: var(--color-sidebar-active); }
 .nav-item-child.active::before { color: var(--color-sidebar-active); }
+.nav-item-child { border-bottom: 1px solid var(--color-primary-a15); }
+.nav-item-child:last-child { border-bottom: none; }
 .nav-item-child:hover { background: none; color: var(--color-sidebar-active); }
 .nav-item-child.active { background: none; color: var(--color-sidebar-active); box-shadow: none; font-weight: var(--weight-semibold); }
 
