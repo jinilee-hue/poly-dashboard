@@ -352,7 +352,7 @@ a { text-decoration: none; }
   width: 16px;
   height: 2px;
   background: var(--color-primary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 .card-subtitle { font-size: var(--text-sm); color: var(--color-text-tertiary); margin-top: 2px; }
 .card-body { padding: 12px var(--space-6) var(--space-6); }
