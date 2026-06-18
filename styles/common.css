@@ -337,7 +337,7 @@ a { text-decoration: none; }
 .card {
   background: var(--color-bg);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border: var(--border-default);
   overflow: hidden;
 }
 
@@ -355,8 +355,8 @@ a { text-decoration: none; }
 .card.flush-x > .card-body { padding-left: 0; padding-right: 0; }
 
 /* ─── CHART GRIDS ─────────────────────────────── */
-.chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); margin-bottom: var(--space-8); }
-.chart-grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-6); margin-bottom: var(--space-8); }
+.chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); margin-bottom: var(--space-8); }
+.chart-grid-3 { display: grid; grid-template-columns: 2fr 1fr; gap: var(--space-8); margin-bottom: var(--space-8); }
 .chart-container-sm { height: 240px; position: relative; }
 .chart-container-md { height: 320px; position: relative; }
 .chart-container-lg { height: 420px; position: relative; }
