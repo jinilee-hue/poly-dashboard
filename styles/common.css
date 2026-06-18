@@ -84,7 +84,7 @@ a { text-decoration: none; }
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
-  margin: 1px var(--space-2);
+  margin: 3px var(--space-2);
   border-radius: var(--radius-md);
   color: var(--color-sidebar-text);
   font-size: var(--text-sm);
@@ -113,7 +113,7 @@ a { text-decoration: none; }
   display: flex; align-items: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
-  margin: 1px var(--space-2);
+  margin: 3px var(--space-2);
   border-radius: var(--radius-md);
   width: calc(100% - var(--space-4));
   color: var(--color-sidebar-text);
