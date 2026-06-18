@@ -1189,6 +1189,8 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   background: var(--color-bg);
   border-bottom: var(--border-default);
   box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: 10;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: stretch;
