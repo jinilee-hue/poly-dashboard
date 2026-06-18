@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python3 *)",
-      "Bash(grep -l \"<style>\" D:\\\\이진희\\\\\\\\#WORK\\\\\\\\#AI\\\\\\\\Claude\\\\\\\\dashboard\\\\\\\\poly-agent\\\\\\\\*.html)",
-      "WebFetch(domain:jinilee-hue.github.io)"
-    ]
-  }
-}
