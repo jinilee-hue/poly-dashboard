@@ -26,6 +26,8 @@ const ICONS = {
   message: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
   settings: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
   refresh: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>`,
+  'layout-side': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>`,
+  'layout-top':  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>`,
   plus: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
   download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
   search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
@@ -50,36 +52,78 @@ function _syncThemeBtn() {
 }
 
 function initLayout(currentHref) {
-  const el = document.getElementById('sidebar');
-  if (!el) return;
+  var navMode = localStorage.getItem('epNav') || 'side';
+  document.documentElement.setAttribute('data-layout', navMode);
 
-  el.innerHTML = `
-    <div class="sidebar-logo">
-      <div>
-        <span class="sidebar-brand">EduPoly</span>
-        <span class="sidebar-tagline">캠퍼스 관리</span>
-      </div>
-    </div>
-    <nav class="sidebar-nav">
-      ${NAV_ITEMS.map(item => `
-        <a href="${item.href}" class="nav-item ${currentHref === item.href ? 'active' : ''}">
-          ${ICONS[item.icon] || ''}
-          <span>${item.label}</span>
-        </a>
-      `).join('')}
-    </nav>
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="user-avatar">이진</div>
-        <div>
-          <span class="user-name">이진희</span>
-          <span class="user-role">관리자</span>
+  /* ── 사이드바 (side 모드) ── */
+  if (navMode === 'side') {
+    const el = document.getElementById('sidebar');
+    if (el) {
+      el.innerHTML = `
+        <div class="sidebar-logo">
+          <div>
+            <span class="sidebar-brand">EduPoly</span>
+            <span class="sidebar-tagline">캠퍼스 관리</span>
+          </div>
         </div>
-      </div>
-    </div>
-  `;
+        <nav class="sidebar-nav">
+          ${NAV_ITEMS.map(item => `
+            <a href="${item.href}" class="nav-item ${currentHref === item.href ? 'active' : ''}">
+              ${ICONS[item.icon] || ''}
+              <span>${item.label}</span>
+            </a>
+          `).join('')}
+        </nav>
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <div class="user-avatar">이진</div>
+            <div>
+              <span class="user-name">이진희</span>
+              <span class="user-role">관리자</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+  }
 
-  /* Breadcrumb: replace topbar-title with home > current page */
+  /* ── 상단 네비 (top 모드) ── */
+  if (navMode === 'top') {
+    /* topbar-left 에 브랜드 삽입 */
+    var topbarLeft = document.querySelector('.topbar-left');
+    if (topbarLeft) {
+      var brandEl = document.createElement('div');
+      brandEl.className = 'topbar-brand';
+      brandEl.innerHTML = '<span class="sidebar-brand">EduPoly</span><span class="sidebar-tagline">캠퍼스 관리</span>';
+      topbarLeft.insertBefore(brandEl, topbarLeft.firstChild);
+    }
+
+    /* topbar 아래에 topnav 삽입 */
+    var topbar = document.querySelector('.topbar');
+    if (topbar) {
+      var topnav = document.createElement('nav');
+      topnav.className = 'topnav';
+      NAV_ITEMS.forEach(function (item) {
+        var a = document.createElement('a');
+        a.href = item.href;
+        a.className = 'topnav-item' + (currentHref === item.href ? ' active' : '');
+
+        var iconSpan = document.createElement('span');
+        iconSpan.className = 'topnav-item-icon';
+        iconSpan.innerHTML = ICONS[item.icon] || '';
+
+        var labelSpan = document.createElement('span');
+        labelSpan.textContent = item.label;
+
+        a.appendChild(iconSpan);
+        a.appendChild(labelSpan);
+        topnav.appendChild(a);
+      });
+      topbar.insertAdjacentElement('afterend', topnav);
+    }
+  }
+
+  /* ── 브레드크럼 ── */
   const titleEl = document.querySelector('.topbar-title');
   if (titleEl) {
     const currentItem = NAV_ITEMS.find(item => item.href === currentHref);
@@ -96,24 +140,38 @@ function initLayout(currentHref) {
         </nav>`;
   }
 
-  /* Inject theme toggle button into topbar */
+  /* ── topbar 액션 버튼 ── */
   const actions = document.querySelector('.topbar-actions');
   if (actions) {
-    const btn = document.createElement('button');
-    btn.className = 'icon-btn';
-    btn.id = 'theme-toggle';
-    btn.addEventListener('click', function () {
+    /* 테마 토글 */
+    const themeBtn = document.createElement('button');
+    themeBtn.className = 'icon-btn';
+    themeBtn.id = 'theme-toggle';
+    themeBtn.addEventListener('click', function () {
       const dark = document.documentElement.getAttribute('data-theme') === 'dark';
       const next = dark ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('epTheme', next);
       _syncThemeBtn();
-
       if (typeof setChartDefaults === 'function') setChartDefaults();
       window.dispatchEvent(new CustomEvent('themechange', { detail: { dark: next === 'dark' } }));
     });
-    actions.insertBefore(btn, actions.firstChild);
+    actions.insertBefore(themeBtn, actions.firstChild);
     _syncThemeBtn();
+
+    /* 레이아웃 토글 */
+    var layoutBtn = document.createElement('button');
+    layoutBtn.className = 'icon-btn';
+    layoutBtn.id = 'layout-toggle';
+    layoutBtn.innerHTML = navMode === 'top' ? ICONS['layout-side'] : ICONS['layout-top'];
+    layoutBtn.title = navMode === 'top' ? '사이드바 메뉴로 전환' : '상단 메뉴로 전환';
+    layoutBtn.setAttribute('aria-label', layoutBtn.title);
+    layoutBtn.addEventListener('click', function () {
+      var cur = localStorage.getItem('epNav') || 'side';
+      localStorage.setItem('epNav', cur === 'top' ? 'side' : 'top');
+      location.reload();
+    });
+    actions.insertBefore(layoutBtn, actions.firstChild);
   }
 
   _initTabBar(currentHref);
