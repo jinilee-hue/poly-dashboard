@@ -11,7 +11,7 @@ const NAV_ITEMS = [
   { icon: 'bell',        label: '공지사항',  href: 'notices.html' },
   { icon: 'message',     label: '상담 관리', href: 'counseling.html' },
   { icon: 'settings',    label: '설정',      href: 'settings.html' },
-  { icon: 'refresh',     label: '모달 데모', href: 'modal-demo.html' },
+  { icon: 'refresh',     label: '컴포넌트 데모', href: 'modal-demo.html' },
 ];
 
 /* 상단 네비 전용 그룹 구조 (2-depth 드롭다운) */
@@ -32,7 +32,7 @@ const TOP_NAV_GROUPS = [
     { label: '상담 관리', href: 'counseling.html' },
   ]},
   { label: '설정',      icon: 'settings',    href: 'settings.html' },
-  { label: '모달 데모', icon: 'refresh',     href: 'modal-demo.html' },
+  { label: '컴포넌트 데모', icon: 'refresh',     href: 'modal-demo.html' },
 ];
 
 const ICONS = {
