@@ -482,7 +482,7 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .btn-ghost { background: #4B5563; color: #FFFFFF; border: 1px solid #4B5563; }
 .btn-ghost:hover { background: #374151; border-color: #374151; }
 
-.btn-danger { background: #344054; color: #FFFFFF; }
+.btn-danger { background: #344054; color: #FFFFFF; border: 1px solid transparent; }
 .btn-danger:hover { background: #1E2D40; color: #FFFFFF; }
 
 .btn-sm { height: auto; padding: 6px 12px; font-size: var(--text-xs); }
