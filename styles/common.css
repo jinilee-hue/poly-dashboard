@@ -443,16 +443,19 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .tr-featured {
   filter: drop-shadow(0 4px 12px var(--color-primary-a25));
 }
-.tr-featured td {
+.tr-featured td,
+.tr-featured th {
   background: var(--color-bg) !important;
   border-top: 1.5px solid var(--color-primary) !important;
   border-bottom: 1.5px solid var(--color-primary) !important;
 }
-.tr-featured td:first-child {
+.tr-featured td:first-child,
+.tr-featured th:first-child {
   border-left: 1.5px solid var(--color-primary) !important;
   border-radius: var(--radius-md) 0 0 var(--radius-md);
 }
-.tr-featured td:last-child {
+.tr-featured td:last-child,
+.tr-featured th:last-child {
   border-right: 1.5px solid var(--color-primary) !important;
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
 }
