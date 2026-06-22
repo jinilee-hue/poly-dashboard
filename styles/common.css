@@ -420,6 +420,17 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 
 .table-avatar { display: flex; align-items: center; gap: var(--space-3); }
 
+.table-group-th {
+  background: var(--color-bg-subtle);
+  text-align: center;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-secondary);
+  padding: 10px 16px;
+  border-bottom: var(--border-default);
+  letter-spacing: 0.3px;
+}
+
 .table-vertical { width: 100%; border-collapse: collapse; }
 .table-vertical tr { border-bottom: var(--border-default); }
 .table-vertical tr:last-child { border-bottom: none; }
