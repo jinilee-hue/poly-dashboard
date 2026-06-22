@@ -273,7 +273,7 @@ a { text-decoration: none; }
   cursor: pointer; position: relative; color: var(--color-text-secondary);
   transition: all 0.15s ease;
 }
-.icon-btn:hover { background: var(--color-bg-muted); color: var(--color-primary); border-color: var(--color-primary-light); }
+.icon-btn:hover { background: transparent; color: var(--color-primary); border-color: var(--color-primary); }
 .icon-btn svg { width: 18px; height: 18px; }
 
 .badge-dot-indicator {
@@ -446,6 +446,7 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 .badge-warning { background: var(--color-warning-light); color: var(--color-warning); }
 .badge-danger  { background: var(--color-danger-light);  color: var(--color-danger); }
 .badge-neutral { background: var(--color-bg-muted);     color: var(--color-text-secondary); }
+.badge-ghost   { background: #4B5563; color: #FFFFFF; font-weight: var(--weight-normal); -webkit-font-smoothing: antialiased; }
 .badge-primary { background: var(--color-primary-light); color: var(--color-primary); }
 .badge-poly    { background: var(--color-primary-light); color: var(--color-primary); }
 .badge-canb    { background: var(--color-canb-light);    color: var(--color-canb-primary); }
@@ -1020,7 +1021,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-theme="dark"] { color-scheme: dark; }
 
 [data-theme="dark"] .icon-btn:hover {
-  background: rgba(255,255,255,0.06);
+  background: transparent;
   color: var(--color-primary);
   border-color: var(--color-primary);
 }
