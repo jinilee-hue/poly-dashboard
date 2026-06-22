@@ -420,6 +420,43 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 
 .table-avatar { display: flex; align-items: center; gap: var(--space-3); }
 
+.table-vertical { width: 100%; border-collapse: collapse; }
+.table-vertical tr { border-bottom: var(--border-default); }
+.table-vertical tr:last-child { border-bottom: var(--border-default); }
+.table-vertical th {
+  background: var(--color-bg-subtle);
+  text-align: left;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+  padding: 12px 16px;
+  white-space: nowrap;
+  width: 1%;
+}
+.table-vertical td {
+  text-align: left;
+  font-size: var(--text-sm);
+  color: var(--color-text-primary);
+  padding: 12px 16px;
+}
+
+.tr-featured {
+  filter: drop-shadow(0 4px 12px var(--color-primary-a25));
+}
+.tr-featured td {
+  background: var(--color-bg) !important;
+  border-top: 1.5px solid var(--color-primary) !important;
+  border-bottom: 1.5px solid var(--color-primary) !important;
+}
+.tr-featured td:first-child {
+  border-left: 1.5px solid var(--color-primary) !important;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.tr-featured td:last-child {
+  border-right: 1.5px solid var(--color-primary) !important;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
 .avatar-circle {
   width: 28px; height: 28px;
   border-radius: var(--radius-full);
