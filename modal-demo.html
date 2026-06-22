@@ -418,17 +418,11 @@ closeModal('myModal');
 <!-- ── 모달 3: 확인 (소형) ─────────────────── -->
 <div class="modal-overlay" id="modal-confirm">
   <div class="modal modal-sm">
-    <div class="modal-header">
-      <span class="modal-title">수납 처리 확인</span>
-      <button class="modal-close" onclick="closeModal('modal-confirm')" aria-label="닫기">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
     <div class="modal-body" style="text-align:center;">
       <p style="font-size:var(--text-base);color:var(--color-text-primary);margin-bottom:8px;">박도윤 학생의 수강료를 납부 처리하시겠습니까?</p>
       <p style="font-size:var(--text-sm);color:var(--color-text-secondary);">납부 금액: <strong style="color:var(--color-text-primary);">₩260,000</strong> · 계좌이체</p>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer modal-footer-split">
       <button class="btn btn-secondary" onclick="closeModal('modal-confirm')">취소</button>
       <button class="btn btn-primary">확인</button>
     </div>
@@ -438,12 +432,6 @@ closeModal('myModal');
 <!-- ── 모달 4: 삭제 확인 ───────────────────── -->
 <div class="modal-overlay" id="modal-delete">
   <div class="modal modal-sm">
-    <div class="modal-header">
-      <span class="modal-title">학생 삭제</span>
-      <button class="modal-close" onclick="closeModal('modal-delete')" aria-label="닫기">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
     <div class="modal-body" style="text-align:center;">
       <div style="display:flex;flex-direction:column;align-items:center;gap:16px;">
         <div style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--color-danger-light);color:var(--color-danger);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -455,7 +443,7 @@ closeModal('myModal');
         </div>
       </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer modal-footer-split">
       <button class="btn btn-secondary" onclick="closeModal('modal-delete')">취소</button>
       <button class="btn btn-danger">삭제</button>
     </div>
