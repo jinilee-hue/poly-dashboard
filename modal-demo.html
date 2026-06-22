@@ -405,6 +405,75 @@
           </table>
         </div>
 
+        <p style="font-size:11px;font-weight:700;color:var(--color-text-tertiary);letter-spacing:0.6px;text-transform:uppercase;margin-bottom:14px;margin-top:32px;">그룹 헤더 · colspan</p>
+        <div class="table-wrapper">
+          <table>
+            <thead style="border-top: var(--border-default);">
+              <!-- 1행: 그룹 헤더 -->
+              <tr>
+                <th class="th-fixed" rowspan="2">운영구분</th>
+                <th class="th-fixed" rowspan="2">권역</th>
+                <th class="th-fixed" rowspan="2">캠퍼스명</th>
+                <th class="th-group" colspan="4">전년</th>
+                <th class="th-group" colspan="4">금년</th>
+                <th class="th-group" colspan="2">전년→금년 월별</th>
+                <th class="th-group" colspan="2">전월 연간</th>
+                <th class="th-group" colspan="2">당월 연간</th>
+              </tr>
+              <!-- 2행: 세부 헤더 -->
+              <tr>
+                <th class="th-sub">전월</th><th class="th-sub">당월</th><th class="th-sub">월별 증감<br><span style="font-size:10px;opacity:0.7;">(B-A)</span></th><th class="th-sub">월별 증감율<br><span style="font-size:10px;opacity:0.7;">(B/A)</span></th>
+                <th class="th-sub">전월</th><th class="th-sub">당월</th><th class="th-sub">월별 증감<br><span style="font-size:10px;opacity:0.7;">(F-E)</span></th><th class="th-sub">월별 증감율<br><span style="font-size:10px;opacity:0.7;">(F/E)</span></th>
+                <th class="th-sub">증감 차<br><span style="font-size:10px;opacity:0.7;">(G-C)</span></th><th class="th-sub">증감율 차<br><span style="font-size:10px;opacity:0.7;">(H-D)</span></th>
+                <th class="th-sub">증감<br><span style="font-size:10px;opacity:0.7;">(E-A)</span></th><th class="th-sub">증감율<br><span style="font-size:10px;opacity:0.7;">(E/A)</span></th>
+                <th class="th-sub">증감<br><span style="font-size:10px;opacity:0.7;">(F-B)</span></th><th class="th-sub">증감율<br><span style="font-size:10px;opacity:0.7;">(F/B)</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="td-fixed">직영</td><td class="td-fixed">서울권</td><td class="td-fixed text-left">대치폴리마그넷</td>
+                <td>186</td><td>182</td><td class="num-negative">-4</td><td class="num-negative">-2.20%</td>
+                <td>137</td><td>128</td><td class="num-negative">-9</td><td class="num-negative">-6.60%</td>
+                <td class="num-negative">-5</td><td class="num-negative">-4.4%p</td>
+                <td class="num-negative">-49</td><td class="num-negative">-26.30%</td>
+                <td class="num-negative">-54</td><td class="num-negative">-29.70%</td>
+              </tr>
+              <tr>
+                <td class="td-fixed">직영</td><td class="td-fixed">서울권</td><td class="td-fixed text-left">목동</td>
+                <td>962</td><td>967</td><td class="num-positive">5</td><td class="num-positive">0.50%</td>
+                <td>878</td><td>873</td><td class="num-negative">-5</td><td class="num-negative">-0.60%</td>
+                <td class="num-negative">-10</td><td class="num-negative">-1.1%p</td>
+                <td class="num-negative">-84</td><td class="num-negative">-8.70%</td>
+                <td class="num-negative">-94</td><td class="num-negative">-9.70%</td>
+              </tr>
+              <tr>
+                <td class="td-fixed">직영</td><td class="td-fixed">서울권</td><td class="td-fixed text-left">목동매그넷</td>
+                <td>360</td><td>356</td><td class="num-negative">-4</td><td class="num-negative">-1.10%</td>
+                <td>345</td><td>335</td><td class="num-negative">-10</td><td class="num-negative">-2.90%</td>
+                <td class="num-negative">-6</td><td class="num-negative">-1.8%p</td>
+                <td class="num-negative">-15</td><td class="num-negative">-4.20%</td>
+                <td class="num-negative">-21</td><td class="num-negative">-5.90%</td>
+              </tr>
+              <tr>
+                <td class="td-fixed">직영</td><td class="td-fixed">서울권</td><td class="td-fixed text-left" style="color:var(--color-primary);">목동엠폴리</td>
+                <td>440</td><td>435</td><td class="num-negative">-5</td><td class="num-negative">-1.10%</td>
+                <td>438</td><td>423</td><td class="num-negative">-15</td><td class="num-negative">-3.40%</td>
+                <td class="num-negative">-10</td><td class="num-negative">-2.3%p</td>
+                <td class="num-negative">-2</td><td class="num-negative">-0.50%</td>
+                <td class="num-negative">-12</td><td class="num-negative">-2.80%</td>
+              </tr>
+              <tr>
+                <td class="td-fixed">직영</td><td class="td-fixed">서울권</td><td class="td-fixed text-left">엠아이엘</td>
+                <td>153</td><td>162</td><td class="num-positive">9</td><td class="num-positive">5.90%</td>
+                <td>194</td><td>190</td><td class="num-negative">-4</td><td class="num-negative">-2.10%</td>
+                <td class="num-negative">-13</td><td class="num-negative">-8%p</td>
+                <td class="num-positive">41</td><td class="num-positive">26.80%</td>
+                <td class="num-positive">28</td><td class="num-positive">17.30%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
       </div>
     </div>
 

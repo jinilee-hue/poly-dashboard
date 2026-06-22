@@ -431,6 +431,18 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
   letter-spacing: 0.3px;
 }
 
+/* 그룹 헤더 테이블: colspan으로 묶인 th 우측 구분선 */
+thead th.th-group { border-right: var(--border-default); border-bottom: var(--border-default); }
+thead th.th-group:last-child { border-right: none; }
+thead th.th-sub { border-right: var(--border-default); }
+thead th.th-sub:last-child { border-right: none; }
+/* 고정 열 (좌측 rowspan) */
+thead th.th-fixed { border-right: var(--border-default); vertical-align: middle; }
+tbody td.td-fixed { border-right: var(--border-default); }
+/* 양수/음수 색상 */
+.num-positive { color: var(--color-primary); }
+.num-negative { color: var(--color-danger); }
+
 .table-vertical { width: 100%; border-collapse: collapse; }
 .table-vertical tr { border-bottom: var(--border-default); }
 .table-vertical tr:last-child { border-bottom: none; }
