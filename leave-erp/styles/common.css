@@ -204,6 +204,23 @@ a { text-decoration: none; }
 .user-name { font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--color-text-primary); display: block; }
 .user-role { font-size: var(--text-xs); color: var(--color-sidebar-text); display: block; }
 
+.user-info { flex: 1; }
+
+.sidebar-logout {
+  width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border: var(--border-default);
+  border-radius: var(--radius-md);
+  background: none;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  padding: 0;
+}
+.sidebar-logout:hover { color: var(--color-primary); border-color: var(--color-primary); background: var(--color-primary-light); }
+.sidebar-logout svg { width: 14px; height: 14px; }
+
 /* ─── MAIN CONTENT ────────────────────────────── */
 .main-content {
   flex: 1;
