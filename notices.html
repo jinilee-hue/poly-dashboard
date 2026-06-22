@@ -7,6 +7,11 @@
   <link rel="stylesheet" href="styles/tokens.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.16.0/styles/overlayscrollbars.min.css">
   <link rel="stylesheet" href="styles/common.css">
+  <style>
+    .notice-link { color: var(--color-text-primary); font-weight: var(--weight-normal); text-decoration: none; }
+    .notice-link:hover { color: var(--color-primary); }
+    .notice-link--important { font-weight: var(--weight-medium); }
+  </style>
 </head>
 <body>
 <aside class="sidebar" id="sidebar"></aside>
@@ -174,11 +179,10 @@
   document.getElementById('noticeBody').innerHTML = notices.map(n => `
     <tr>
       <td class="text-center">
-        ${n.important ? `<svg viewBox="0 0 24 24" fill="#DC2626" stroke="none" width="16" height="16" aria-label="중요"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>` : ''}
+        ${n.important ? `<svg viewBox="0 0 24 24" fill="var(--color-danger)" stroke="none" width="16" height="16" aria-label="중요"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>` : ''}
       </td>
       <td class="text-left">
-        <a href="#" style="color:var(--color-text-primary);font-weight:${n.important?'var(--weight-medium)':'var(--weight-normal)'};text-decoration:none;"
-           onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-text-primary)'">
+        <a href="#" class="notice-link${n.important?' notice-link--important':''}">
           ${n.title}
         </a>
       </td>
