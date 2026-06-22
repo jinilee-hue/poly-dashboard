@@ -422,7 +422,7 @@ tbody td.text-mono { font-family: var(--font-mono); font-size: var(--text-xs); }
 
 .table-vertical { width: 100%; border-collapse: collapse; }
 .table-vertical tr { border-bottom: var(--border-default); }
-.table-vertical tr:last-child { border-bottom: var(--border-default); }
+.table-vertical tr:last-child { border-bottom: none; }
 .table-vertical th {
   background: var(--color-bg-subtle);
   text-align: left;
