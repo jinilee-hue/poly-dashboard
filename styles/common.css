@@ -914,7 +914,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   color: var(--color-text-tertiary);
   cursor: not-allowed;
 }
-.form-hint { font-size: var(--text-xs); color: var(--color-text-tertiary); margin-top: 4px; }
+.form-hint { display: block; font-size: var(--text-xs); color: var(--color-text-tertiary); margin-top: 4px; }
 .card-list-pad { padding: var(--space-4) var(--space-6); }
 [data-layout="top"] .card-list-pad { padding-left: 0; padding-right: 0; }
 
