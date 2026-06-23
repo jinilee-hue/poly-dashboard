@@ -1016,10 +1016,6 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   .kpi-grid { grid-template-columns: 1fr; }
   .page-content { padding: var(--space-3) var(--space-3); }
 
-  /* 폰 사이즈에서 탭바 숨김 */
-  .tab-bar { display: none; }
-  .page-content { padding-bottom: var(--space-3); }
-
   /* iOS Safari 폼 필드 탭 시 자동 줌 방지 (font-size 16px 미만이면 줌됨) */
   .form-input, .form-select, .form-textarea, .search-box input { font-size: 16px; }
 
@@ -1370,6 +1366,12 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-layout="top"] .sidebar       { display: none; }
 [data-layout="top"] .main-content  { margin-left: 0; overflow-y: auto; }
 [data-layout="top"] .tab-bar       { left: 0; }
+
+/* 탭바는 base style(.tab-bar{display:flex}) 이후에 선언해야 override 가능 */
+@media (max-width: 480px) {
+  .tab-bar { display: none; }
+  .page-content { padding-bottom: var(--space-3); }
+}
 [data-layout="top"] .topnav-bar    { position: sticky; top: 0; flex-shrink: 0; }
 [data-layout="top"] .page-content  { overflow-y: visible; flex: none; }
 [data-layout="top"] .topnav-bar            { border-bottom: none; }
