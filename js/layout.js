@@ -483,6 +483,7 @@ function _csWrapSelect(sel) {
     var rect = trigger.getBoundingClientRect();
     var dropH = dropdown.scrollHeight || 200;
     dropdown.style.left = rect.left + 'px';
+    dropdown.style.width = Math.max(rect.width, parseFloat(dropdown.style.width) || 0) + 'px';
     if (window.innerHeight - rect.bottom - 6 < dropH && rect.top > dropH + 6) {
       dropdown.style.top = (rect.top - dropH - 6) + 'px';
     } else {
