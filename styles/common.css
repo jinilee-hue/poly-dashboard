@@ -969,7 +969,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 .os-theme-poly {
   --os-size: 5px;
   --os-padding-perpendicular: 0;
-  --os-padding-axis: 0;
+  --os-padding-axis: 4px;
   --os-track-border-radius: 10px;
   --os-track-bg: rgba(0,0,0,0.04);
   --os-track-bg-hover: rgba(0,0,0,0.06);
@@ -978,9 +978,9 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   --os-track-border-hover: 0;
   --os-track-border-active: 0;
   --os-handle-border-radius: 10px;
-  --os-handle-bg: var(--color-primary-a30);
-  --os-handle-bg-hover: var(--color-primary-a40);
-  --os-handle-bg-active: var(--color-primary-a50);
+  --os-handle-bg: rgba(0,0,0,0.42);
+  --os-handle-bg-hover: rgba(0,0,0,0.58);
+  --os-handle-bg-active: rgba(0,0,0,0.72);
   --os-handle-border: 0;
   --os-handle-border-hover: 0;
   --os-handle-border-active: 0;
@@ -990,6 +990,8 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   --os-handle-perpendicular-size-active: 100%;
   --os-handle-interactive-area-offset: 2px;
 }
+.os-scrollbar-vertical.os-theme-poly   { right: 4px !important; }
+.os-scrollbar-horizontal.os-theme-poly { bottom: 4px !important; }
 
 /* ─── MODAL ───────────────────────────────────── */
 .modal-overlay {
@@ -1119,9 +1121,9 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
 [data-theme="dark"] .user-name { color: #FFFFFF; }
 
 [data-theme="dark"] .os-theme-poly {
-  --os-handle-bg: var(--color-primary-a30);
-  --os-handle-bg-hover: var(--color-primary-a40);
-  --os-handle-bg-active: var(--color-primary-a50);
+  --os-handle-bg: rgba(255,255,255,0.25);
+  --os-handle-bg-hover: rgba(255,255,255,0.40);
+  --os-handle-bg-active: rgba(255,255,255,0.55);
 }
 
 [data-theme="dark"] .search-box:focus-within,
