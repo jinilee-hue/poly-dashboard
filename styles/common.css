@@ -1564,7 +1564,7 @@ span.flatpickr-weekday { background: transparent !important; color: var(--color-
   border-bottom: 2px solid transparent;
   cursor: pointer;
   transition: color 0.12s, background 0.12s;
-  margin-bottom: 0;
+  margin-bottom: -1px;
   font-family: inherit;
 }
 .topnav-group-trigger:hover { color: var(--color-primary); }
